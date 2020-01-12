@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">EventApp</string>
+    <string name="title_home">Лента</string>
+    <string name="map">Карта</string>
+    <string name="notifications">Уведомления</string>
+    <string name="profile">Профиль</string>
+    <string name="select_city">Выбрать город</string>
+    <string name="favorits">Избранное</string>
+    <string name="add_meeting">Добавить событие</string>
+    <string name="my_meeting">Мои события</string>
+    <string name="exit">Выйти</string>
+    <string name="settings">Настройки</string>
+    <string-array name="cities">
+        <item>Выбрать</item>
+        <item>Москва</item>
+        <item>Санкт Петербург</item>
+        <item>Новосибирск</item>
+        <item>Екатерибург</item>
+        <item>Нижний новгород</item>
+        <item>Казань</item>
+        <item>Челябинск</item>
+        <item>Самара</item>
+        <item>Ростов-на-Дону</item>
+        <item>Уфв</item>
+        <item>Волгоград</item>
+    </string-array>
+    <string name="city_true">Ваш город: </string>
+    <string name="city_false">Геопозиция отключена</string>
+    <string name="select_type">Выберите тип мероприятия</string>
+    <string name="exhibition">Выставка</string>
+    <string name="Concert">Концерт</string>
+    <string name="theatre">Театр и цирк</string>
+    <string name="party">Вечеринка</string>
+    <string name="master_class">Мастер-класс</string>
+    <string name="kids">Для детей</string>
+    <string name="active">Активный отдых</string>
+    <string name="fair">Ярмарка</string>
+    <string name="excursion">Экскурсия</string>
+    <string name="cinema">Кино</string>
+    <string name="add_about">Введите описание</string>
+    <string name="add_info">Добавьте информацию</string>
+    <string name="add_name">Название</string>
+    <string name="about">Описание</string>
+    <string name="continue_but">Продолжить</string>
+    <string name="address">Адрес</string>
+    <string name="date_start">Начало</string>
+    <string name="date_end">Конец (необязательно)</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="free">Бесплатно</string>
+    <string name="price_kids">Стоимость детского билета</string>
+    <string name="price">Стоимость</string>
+    <string name="price_demo">500</string>
+    <string name="add_info_other">Необязательная информация</string>
+    <string name="filter">Фильтр</string>
+    <string name="add_photo">Добавьте фото</string>
+    <string name="sign">Войти</string>
+    <string name="register">Зарегистроваться</string>
+    <string name="sign_warning1">Потдвердите свой почтовый адрес, если он ещё не подтвежден</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

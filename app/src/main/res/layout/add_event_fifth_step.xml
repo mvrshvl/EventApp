@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.notifications.add.addEvent"
+    android:id="@+id/fifth_step_parent"
+    android:background="@color/colorAccent">
+    <FrameLayout
+        style="@style/add_frame_title"
+        android:id="@+id/title"
+        >
+        <ImageView
+            style="@style/add_back_button"
+            android:id="@+id/back_to_3"
+            />
+        <TextView
+            style="@style/title"
+            android:text="@string/add_photo"
+            />
+    </FrameLayout>
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/fs"/>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+            <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="260dp">
+                tools:context=".ui.notifications.add.addEventFifth">
+
+    </androidx.viewpager.widget.ViewPager>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:background="@color/colorAccent"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:layout_marginRight="10dp"
+            android:id="@+id/fullscreen"
+            android:src="@drawable/ic_fullscreen_black_24dp"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:id="@+id/delete"
+            android:src="@drawable/ic_delete_forever_black_24dp"/>
+    </LinearLayout>
+</FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="40dp"
+            android:src="@drawable/ic_add_circle_black_24dp"
+            android:id="@+id/image1"
+            android:scaleType="fitXY"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="40dp"
+            android:src="@drawable/ic_add_circle_black_24dp"
+            android:visibility="invisible"
+            android:id="@+id/image2"
+            android:scaleType="fitXY"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="40dp"
+            android:src="@drawable/ic_add_circle_black_24dp"
+            android:visibility="invisible"
+            android:id="@+id/image3"
+            android:scaleType="fitXY"/>
+    </LinearLayout>
+<Button
+    style="@style/continue_but"
+    android:layout_marginBottom="70dp"
+    android:id="@+id/done"
+    />
+
+</LinearLayout>

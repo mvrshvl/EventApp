@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.notifications.add.addEvent"
+    android:background="@color/colorAccent">
+    <FrameLayout
+        style="@style/add_frame_title"
+        >
+        <TextView
+            style="@style/title"
+            android:text="@string/select_type"
+            />
+    </FrameLayout>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:layout_marginBottom="50dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/exhibition"
+            android:id="@+id/exhibition"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/Concert"
+            android:id="@+id/concert"
+
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/theatre"
+            android:id="@+id/theatre"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/party"
+            android:id="@+id/party"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/master_class"
+            android:id="@+id/master_class"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/kids"
+            android:id="@+id/kids"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/active"
+            android:id="@+id/active"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/fair"
+            android:id="@+id/fair"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/cinema"
+            android:id="@+id/cinema"
+            />
+        <Button
+            style="@style/basicButtons"
+            android:text="@string/excursion"
+            android:id="@+id/excursion"
+            android:layout_marginBottom="5dp"
+            />
+    </LinearLayout>
+</ScrollView>
+
+
+</LinearLayout>

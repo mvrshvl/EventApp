@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.eventapp.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.eventapp.ui.dashboard.DashboardFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.eventapp.ui.notifications.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/event"
+        android:name="com.example.eventapp.ui.home.ClickEvent.Event"
+        tools:layout="@layout/event_fragment"/>
+    <fragment
+        android:id="@+id/city"
+        android:name="com.example.eventapp.ui.notifications.city.changeCity"
+        tools:layout="@layout/change_city_fragment"/>
+    <fragment
+        android:id="@+id/add_fragment"
+        android:name="com.example.eventapp.ui.notifications.add.addEvent"
+        tools:layout="@layout/add_event_fragment"/>
+    <fragment
+        android:id="@+id/auth"
+        android:name="com.example.eventapp.ui.notifications.auth.Unauth"
+        tools:layout="@layout/unauthorized_fragment_profile"/>
+    <fragment
+    android:id="@+id/registration"
+    android:name="com.example.eventapp.ui.notifications.auth.Registration"
+    tools:layout="@layout/fragment_registration"/>
+    <fragment
+        android:id="@+id/enter"
+        android:name="com.example.eventapp.ui.notifications.auth.Enter"
+        tools:layout="@layout/fragment_enter"/>
+    <fragment
+        android:id="@+id/fav"
+        android:name="com.example.eventapp.ui.notifications.favourites.myFavourites"
+        tools:layout="@layout/favourites_fragment"/>
+
+</navigation>

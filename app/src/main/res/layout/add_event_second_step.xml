@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.notifications.add.addEvent"
+    android:background="@color/colorAccent">
+    <FrameLayout
+        style="@style/add_frame_title"
+        >
+        <ImageView
+        style="@style/add_back_button"
+            android:id="@+id/back_to_0"
+             />
+        <TextView
+            style="@style/title"
+            android:text="@string/add_about"
+            />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_name"
+                android:id="@+id/edit_name"
+                android:maxLength="30"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:hint="@string/about"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:id="@+id/edit_about"
+                android:maxLength="260"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+    <Button
+        style="@style/continue_but"
+        android:id="@+id/next_to_2"
+        android:layout_marginBottom="70dp"/>
+
+</LinearLayout>

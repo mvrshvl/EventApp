@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/parent"
+    tools:context=".ui.notifications.auth.Registration">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="invisible"
+            android:theme="@style/CircularProgress"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+<EditText
+    style="@style/signing_et"
+    android:inputType="textEmailAddress"
+    android:hint="Почта"
+    android:id="@+id/mail"/>
+    <EditText
+        style="@style/signing_et"
+        android:inputType="textPassword"
+        android:hint="Пароль"
+        android:id="@+id/pass"
+        />
+    <EditText
+        style="@style/signing_et"
+        android:id="@+id/name"
+        android:inputType="text"
+        android:hint="Имя"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/city_true"/>
+    <Spinner
+        style="@style/signing_et"
+        android:id="@+id/town"
+        android:entries="@array/cities"/>
+    </LinearLayout>
+    <Button
+        style="@style/continue_but"
+        android:id="@+id/success"
+        />
+
+
+</LinearLayout>
