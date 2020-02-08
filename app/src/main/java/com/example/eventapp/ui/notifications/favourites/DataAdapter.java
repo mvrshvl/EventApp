@@ -24,8 +24,10 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,7 @@ import java.util.UUID;
 import static com.example.eventapp.MainActivity.getCurrentUser;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.MainActivity.mFirebaseDatabase;
+import static com.example.eventapp.Utils.deleteLike;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private LayoutInflater inflater;
@@ -44,11 +47,13 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private String type ;
     private long likes ;
     private String image;
+    private List<Event> fav_events;
 
     public DataAdapter(Context context, List<Favourites> home_fragments) {
         this.favourite_cards = home_fragments;
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+        fav_events = new ArrayList<>();
     }
 
 
@@ -71,9 +76,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                 type = dataSnapshot.child("type").getValue().toString();
                 likes = (long)dataSnapshot.child("like").getValue();
                 image = dataSnapshot.child("images_path1").getValue().toString();
-
                 Picasso.get().load(image).fit().centerCrop().into(holder.imageView);//.fit
-
+                Event ev = dataSnapshot.getValue(Event.class);
+                fav_events.add(ev);
 
                 holder.nameView.setText(name);
                 holder.typeView.setText(type);
@@ -83,12 +88,24 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                     @Override
                     public void onClick(View v) {
                         AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                        Bundle data = new Bundle();
-                        data.putString("name",name);
-                        //data.putString("date",date);
-                        data.putString("image",image);
+                        final Bundle data = new Bundle();
+                        data.putString("id",favourite_cards.get(position).getEvent());
                         MainActivity.recyclerPosition = position;
                         Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.event,data);
+                    }
+                });
+                holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        for(Event e : fav_events){
+                            if(e.getId().equals(favourite_cards.get(position).getEvent())){
+                                deleteLike(e);
+                            }
+                            favourite_cards.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(),favourite_cards.size());
+                        }
                     }
                 });
             }
@@ -121,8 +138,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
 
 
-
-
     }
 
     @Override
@@ -133,6 +148,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView imageView;
         final TextView nameView, typeView,likeView;
+        ImageView buttonDelete;
         CardView cv;
         ViewHolder(View view){
             super(view);
@@ -141,7 +157,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             nameView = (TextView) view.findViewById(R.id.name);
             typeView = (TextView)view.findViewById(R.id.type);
             likeView = (TextView) view.findViewById(R.id.likes);
-
+            buttonDelete = (ImageView) view.findViewById(R.id.b_delete);
         }
     }
 }

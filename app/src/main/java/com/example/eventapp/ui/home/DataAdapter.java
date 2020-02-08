@@ -35,6 +35,9 @@ import java.util.UUID;
 import static com.example.eventapp.MainActivity.getCurrentUser;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.MainActivity.mFirebaseDatabase;
+import static com.example.eventapp.MainActivity.setTime;
+import static com.example.eventapp.Utils.deleteLike;
+import static com.example.eventapp.Utils.sendLike;
 
 
 class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
@@ -64,26 +67,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private void changeImgFalse(ImageView v){
         v.setImageResource(R.drawable.ic_favorite_border_black_24dp);
     }
-    private void sendLike(int pos,int flag,TextView tv){
-        if (getCurrentUser()!=null) {
-            String child = home_fragments.get(pos).getId();
-            int count = home_fragments.get(pos).getLike() + flag;
-            DatabaseReference ref = mFirebaseDatabase.getInstance().getReference("events").child(child);
 
-            ref.child("like").setValue(count);
-            if (flag < 0) {
-                String event = home_fragments.get(pos).getId();
-                DatabaseReference reference = mFirebaseDatabase.getInstance().getReference("favourites").child(event);
-                reference.getRef().removeValue();
-
-            }
-            tv.setText(count + "");
-        }else {
-            //toast
-        }
-
-
-    }
     @Override
     public void onBindViewHolder(final DataAdapter.ViewHolder holder, final int position) {
         //Picasso.get().load(home_fragment.getImage()).into(holder.imageView);
@@ -147,9 +131,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 Bundle data = new Bundle();
-                data.putString("name",name);
-                data.putString("date",date);
-                data.putString("image",image);
+                data.putString("id",home_fragments.get(position).getId());
                 MainActivity.recyclerPosition = position;
                 Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.event,data);
             }
@@ -158,22 +140,21 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.b_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Event event = home_fragments.get(position);
                 if (!flags.get(position)) {
                     changeImgTrue(holder.b_like);
                     flags.put(position, true);
-                    sendLike(position, 1, holder.likeView);
-                    if (getCurrentUser() != null){
-                        String id = UUID.randomUUID().toString();
-                    FirebaseUser currentUser = MainActivity.getCurrentUser();
-                    Favourites fav = new Favourites(currentUser.getUid(), home_fragments.get(position).getId(), id);
-                    mDatabaseReference.child("favourites").child(home_fragments.get(position).getId()).setValue(fav);
-                     }
+                    sendLike(home_fragments.get(position));
+                    event.setLike(event.getLike()+1);
                 }
                 else {
                     changeImgFalse(holder.b_like);
                     flags.put(position,false);
-                    sendLike(position,-1,holder.likeView);
+                    deleteLike(home_fragments.get(position));
+                    event.setLike(event.getLike()-1);
                 }
+                holder.likeView.setText(event.getLike()+"");
+
             }
         });
 
@@ -182,26 +163,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
 
 
-    private String setTime(long ms){
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ms);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH);
-        month ++;
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
 
-        int minute = cal.get(Calendar.MINUTE);
-        return format(day)+"."+format(month)+" "+format(hour)+":"+ format(minute);
-        //String amPm = (cal.get(Calendar.AM_PM) == Calendar.PM) ? "PM" : "AM";
-        //int year = cal.get(Calendar.YEAR);
-    }
-
-    private String format(int n){
-        if(n<10)
-            return "0"+n;
-        else
-            return ""+n;
-    }
 
     @Override
     public int getItemCount() {

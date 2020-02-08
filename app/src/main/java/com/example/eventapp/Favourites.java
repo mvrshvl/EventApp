@@ -3,20 +3,11 @@ package com.example.eventapp;
 public class Favourites {
     private String user;
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    private String id;
-
-    public Favourites(String user, String event,String id) {
+    public Favourites(String user, String event) {
         this.user = user;
         this.event = event;
-        this.id = id;
     }
     public Favourites() {
     }

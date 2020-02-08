@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/event"
-        android:name="com.example.eventapp.ui.home.ClickEvent.Event"
+        android:name="com.example.eventapp.ui.home.ClickEvent.EventSingle"
         tools:layout="@layout/event_fragment"/>
     <fragment
         android:id="@+id/city"
