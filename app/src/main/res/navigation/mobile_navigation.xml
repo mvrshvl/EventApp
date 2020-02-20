@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.eventapp.ui.dashboard.DashboardFragment"
+        android:name="com.example.eventapp.ui.map.DashboardFragment"
         android:label="@string/map"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.eventapp.ui.notifications.ProfileFragment"
+        android:name="com.example.eventapp.ui.Profile.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
@@ -28,27 +28,36 @@
         tools:layout="@layout/event_fragment"/>
     <fragment
         android:id="@+id/city"
-        android:name="com.example.eventapp.ui.notifications.city.changeCity"
+        android:name="com.example.eventapp.ui.Profile.city.changeCity"
         tools:layout="@layout/change_city_fragment"/>
     <fragment
         android:id="@+id/add_fragment"
-        android:name="com.example.eventapp.ui.notifications.add.addEvent"
+        android:name="com.example.eventapp.ui.Profile.add.addEvent"
         tools:layout="@layout/add_event_fragment"/>
     <fragment
         android:id="@+id/auth"
-        android:name="com.example.eventapp.ui.notifications.auth.Unauth"
+        android:name="com.example.eventapp.ui.Profile.auth.Unauth"
         tools:layout="@layout/unauthorized_fragment_profile"/>
     <fragment
     android:id="@+id/registration"
-    android:name="com.example.eventapp.ui.notifications.auth.Registration"
+    android:name="com.example.eventapp.ui.Profile.auth.Registration"
     tools:layout="@layout/fragment_registration"/>
     <fragment
         android:id="@+id/enter"
-        android:name="com.example.eventapp.ui.notifications.auth.Enter"
+        android:name="com.example.eventapp.ui.Profile.auth.Enter"
         tools:layout="@layout/fragment_enter"/>
     <fragment
         android:id="@+id/fav"
-        android:name="com.example.eventapp.ui.notifications.favourites.myFavourites"
+        android:name="com.example.eventapp.ui.Profile.favourites.myFavourites"
         tools:layout="@layout/favourites_fragment"/>
+    <fragment
+        android:id="@+id/my_events"
+        android:name="com.example.eventapp.ui.Profile.my_events.myEvents"
+        tools:layout="@layout/my_events_fragment"/>
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.eventapp.ui.Profile.settings.settings"
+        tools:layout="@layout/settings_fragment"/>
+
 
 </navigation>

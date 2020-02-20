@@ -4,6 +4,6 @@
     android:id="@+id/viewpager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.notifications.add.addEvent">
+    tools:context=".ui.Profile.add.addEvent">
 
 </androidx.viewpager.widget.ViewPager>

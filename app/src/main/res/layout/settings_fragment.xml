@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Profile.settings.settings">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:orientation="vertical"
+        >
+        <Button
+            android:layout_marginTop="30dp"
+            style="@style/basicButtons"
+            android:id="@+id/button_name"
+            android:text="@string/change_name"/>
+        <Button
+            style="@style/basicButtons"
+            android:id="@+id/button_password"
+            android:text="@string/change_password"/>
+        <Button
+            style="@style/basicButtons"
+            android:id="@+id/button_verify"
+            android:text="@string/verify_account"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/notifications"
+                android:textSize="15dp"
+                />
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:theme="@style/MySwitch"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+<Button
+    android:layout_marginBottom="70dp"
+    android:text="@string/change_settings"
+    android:layout_gravity="bottom"
+    style="@style/continue_but"/>
+</FrameLayout>

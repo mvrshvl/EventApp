@@ -1,7 +1,9 @@
 package com.example.eventapp;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     static BottomNavigationView navView;
     private List<String> task;
     public static int recyclerPosition=0;
-
+    private static Display display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         initFirebase();
-
+        //настраиваем экран
+        display = getWindowManager().getDefaultDisplay();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -151,5 +154,10 @@ public class MainActivity extends AppCompatActivity {
             return "0"+n;
         else
             return ""+n;
+    }
+    public static Point getDisplay(){
+        Point size = new Point();
+        display.getSize(size);
+        return size;
     }
 }

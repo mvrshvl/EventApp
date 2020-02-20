@@ -2,7 +2,7 @@
     <string name="app_name">EventApp</string>
     <string name="title_home">Лента</string>
     <string name="map">Карта</string>
-    <string name="notifications">Уведомления</string>
+    <string name="notifications">УВЕДОМЛЕНИЯ</string>
     <string name="profile">Профиль</string>
     <string name="select_city">Выбрать город</string>
     <string name="favorits">Избранное</string>
@@ -21,7 +21,7 @@
         <item>Челябинск</item>
         <item>Самара</item>
         <item>Ростов-на-Дону</item>
-        <item>Уфв</item>
+        <item>Уфа</item>
         <item>Волгоград</item>
     </string-array>
     <string name="city_true">Ваш город: </string>
@@ -41,6 +41,17 @@
     <string name="add_info">Добавьте информацию</string>
     <string name="add_name">Название</string>
     <string name="about">Описание</string>
+    <string-array name="types">
+        <item>Тип</item>
+        <item>Выставка</item>
+        <item>Театр и цирк</item>
+        <item>Вечеринка</item>
+        <item>Для детей</item>
+        <item>Активный отдых</item>
+        <item>Ярмарка</item>
+        <item>Экскурсия</item>
+        <item>Кино</item>
+    </string-array>
     <string name="continue_but">Продолжить</string>
     <string name="address">Адрес</string>
     <string name="date_start">Начало</string>
@@ -57,6 +68,25 @@
     <string name="sign">Войти</string>
     <string name="register">Зарегистроваться</string>
     <string name="sign_warning1">Потдвердите свой почтовый адрес, если он ещё не подтвежден</string>
+    <string name="change_name">Изменить имя</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="name">Имя</string>
+    <string name="password">Пароль</string>
+    <string name="password_vetify">Повторите пароль</string>
+    <string name="old_password">Текущий пароль</string>
+    <string name="verify_account">Подтвердить учетную запись</string>
+    <string name="change_settings">Готово</string>
+    <string name="virify_changes">Введите текущий пароль</string>
+    <string name="sr_is_empty">Пусто</string>
+    <string name="kids_ticket">Стоимость для детей</string>
+    <string name="ticket">Стоимость</string>
+    <string name="min_between">От</string>
+    <string name="max_between">До</string>
+    <string name="today">Сегодня</string>
+    <string name="min_date">Начало</string>
+    <string name="max_date">Конец</string>
+    <string name="drop">Сбросить</string>
+    <string name="parameters">Фильтр</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

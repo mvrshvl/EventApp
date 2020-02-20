@@ -1,6 +1,5 @@
 package com.example.eventapp.ui.home.ClickEvent;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -8,9 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
-import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.eventapp.Event;
-import com.example.eventapp.Favourites;
-import com.example.eventapp.MainActivity;
 import com.example.eventapp.R;
-import com.example.eventapp.backPressedListener;
-import com.example.eventapp.ui.notifications.favourites.DataAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +25,7 @@ import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.MainActivity.setTime;
 
 
-public class EventSingle extends Fragment implements backPressedListener {
+public class EventSingle extends Fragment {
 
     private EventViewModel mViewModel;
     private String name;
@@ -91,10 +82,6 @@ public class EventSingle extends Fragment implements backPressedListener {
         mViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         // TODO: Use the ViewModel
     }
-    @Override
-    public void onBackPressed(){
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        Navigation.findNavController(activity,R.id.nav_host_fragment).popBackStack();
-    }
+
 
 }

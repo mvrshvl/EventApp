@@ -75,6 +75,7 @@
             style="@style/basicButtons"
             android:drawableRight="@drawable/ic_burst_mode_black_24dp"
             android:text="@string/my_meeting"
+            android:id="@+id/my_ev"
             />
         <Button
             style="@style/basicButtons"

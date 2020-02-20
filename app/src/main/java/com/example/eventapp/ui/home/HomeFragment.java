@@ -1,10 +1,20 @@
 package com.example.eventapp.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -23,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.eventapp.MainActivity.getDisplay;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
 
 public class HomeFragment extends Fragment {
@@ -31,7 +42,10 @@ public class HomeFragment extends Fragment {
     public Fragment old;
     public ProgressBar circular_progress;
     public RecyclerView recyclerView;
+    private static TextView tv_empty;
+    private static ImageView iv_empty;
     private boolean is_loaded;
+    private ImageButton bt_filter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -40,6 +54,9 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         circular_progress = (ProgressBar) root.findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) root.findViewById(R.id.list);
+        tv_empty = (TextView) root.findViewById(R.id.tv_empty);
+        iv_empty = (ImageView) root.findViewById(R.id.iv_empty);
+        bt_filter = (ImageButton) root.findViewById(R.id.filter_but);
         addEventFirebaseListener();
         homeViewModel.getData().observe(this, new Observer<List>() {
             @Override
@@ -49,6 +66,51 @@ public class HomeFragment extends Fragment {
         });
         //Toast.makeText(getContext(), "Обновление", Toast.LENGTH_SHORT).show();
         is_loaded = false;
+        bt_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Получаем вид с файла prompt.xml, который применим для диалогового окна:
+                LayoutInflater li = LayoutInflater.from(getContext());
+                View promptsView = li.inflate(R.layout.filter_dialog, null);
+
+                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getContext(),R.style.dialogStyle);
+
+                //Настраиваем prompt.xml для нашего AlertDialog:
+                mDialogBuilder.setView(promptsView);
+
+                //Настраиваем отображение поля для ввода текста в открытом диалоге:
+                //final EditText et_name = (EditText) promptsView.findViewById(R.id.new_name);
+
+                //Настраиваем сообщение в диалоговом окне:
+                mDialogBuilder
+
+                        .setCancelable(false)
+                        .setTitle(R.string.parameters)
+                        .setPositiveButton(R.string.continue_but,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+
+                                    }
+                                })
+                        .setNegativeButton(R.string.drop,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                //Создаем AlertDialog:
+                AlertDialog alertDialog = mDialogBuilder.create();
+
+                //и отображаем его:
+                alertDialog.show();
+                Point size = getDisplay();
+                int x = size.x,y = size.y;
+                alertDialog.getWindow().setLayout(size.x,size.y*3/5);
+                alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+
+            }
+        });
         return root;
     }
 
@@ -56,7 +118,8 @@ public class HomeFragment extends Fragment {
         //показываем View загрузки
         circular_progress.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
-
+        tv_empty.setVisibility(View.INVISIBLE);
+        iv_empty.setVisibility(View.INVISIBLE);
         mDatabaseReference.child("events")
                 .addValueEventListener(new ValueEventListener() {
                     //если данные в БД меняются
@@ -80,6 +143,8 @@ public class HomeFragment extends Fragment {
                             //убираем View загрузки
                             circular_progress.setVisibility(View.INVISIBLE);
                             recyclerView.setVisibility(View.VISIBLE);
+                            tv_empty.setVisibility(View.VISIBLE);
+                            iv_empty.setVisibility(View.VISIBLE);
                             is_loaded=true;
                         }
                     }
