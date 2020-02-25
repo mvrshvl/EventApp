@@ -1,13 +1,18 @@
 package com.example.eventapp.ui.Profile.add;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +35,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.eventapp.MainActivity.getDisplay;
 
 public class addEventFifth extends Fragment {
 
@@ -53,7 +61,12 @@ public class addEventFifth extends Fragment {
     };
 
 
-
+    private static ViewPager mPager;
+    private static int currentPage = 0;
+    CirclePageIndicator indicator;
+    private static int NUM_PAGES = 0;
+   // private static final Integer[] IMAGES;
+    private ArrayList<Bitmap> ImagesArray = new ArrayList<Bitmap>();
     private final int PICK_IMAGE_REQUEST = 71;
 
     FirebaseStorage storage;
@@ -112,6 +125,7 @@ public class addEventFifth extends Fragment {
                 R.drawable.add2);
         Bitmap empty3 = BitmapFactory.decodeResource(root.getResources(),
                 R.drawable.add3);
+
         emptyResources = new Bitmap[]{
                 empty1,empty2,empty3
         };
@@ -159,27 +173,56 @@ public class addEventFifth extends Fragment {
                         break;
                         //очень большая логика обработки показа изображения
                     case R.id.fullscreen :
-                        int height = parent.getHeight(); //height is measured
-                        ViewGroup.LayoutParams par = mViewPager.getLayoutParams();
                         if(!fullscreen_flag)
                         {
 
-                            height_fullscreen=par.height;
-                            par.height = height;
-                            mViewPager.setLayoutParams(par);
-                            fullscreen.setImageResource(R.drawable.ic_fullscreen_exit_black_24dp);
+//                            height_fullscreen=par.height;
+//                            par.height = height;
+//                            mViewPager.setLayoutParams(par);
+//                            fullscreen.setImageResource(R.drawable.ic_fullscreen_exit_black_24dp);
                             fullscreen_flag=true;
+                            LayoutInflater li = LayoutInflater.from(getContext());
+                            final View promptsView = li.inflate(R.layout.dialog_full_screen, null);
+
+                            AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getContext(),R.style.dialogStyle);
+                            mPager = (ViewPager) promptsView.findViewById(R.id.pager);
+                            indicator = (CirclePageIndicator)
+                                    promptsView.findViewById(R.id.indicator);
+                            //Настраиваем prompt.xml для нашего AlertDialog:
+                            mDialogBuilder.setView(promptsView);
+                            mDialogBuilder
+                                    .setCancelable(true)
+                                    .setNegativeButton("Закрыть",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog,int id) {
+                                                    dialog.cancel();
+                                                    fullscreen_flag=false;
+                                                    fullscreen.setImageResource(R.drawable.ic_fullscreen_black_24dp);
+                                                }
+                                            });
+
+                            init(promptsView.getContext());
+                            //Создаем AlertDialog:
+                            AlertDialog alertDialog = mDialogBuilder.create();
+
+                            //и отображаем его:
+                            alertDialog.show();
+                            Point size = getDisplay();
+                            alertDialog.getWindow().setLayout(size.x,size.y);
+                            alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+
                         }
-                        else{
-                            fullscreen.setImageResource(R.drawable.ic_fullscreen_black_24dp);
-                            par.height = height_fullscreen;
-                            mViewPager.setLayoutParams(par);
-                            fullscreen_flag=false;
-                        }
+//                        else{
+//                            fullscreen.setImageResource(R.drawable.ic_fullscreen_black_24dp);
+////                            par.height = height_fullscreen;
+////                            mViewPager.setLayoutParams(par);
+//                            fullscreen_flag=false;
+//                        }
                          mCustomPagerAdapter = new CustomPagerAdapter(getContext());
                         mViewPager.setAdapter(mCustomPagerAdapter);
                         mViewPager.setCurrentItem(current_item);
                         break;
+
                     case R.id.delete :
                         current--;
                          if(current_item==2) {
@@ -407,12 +450,9 @@ public void send(){
             View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            if(fullscreen_flag){
-                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            }
-            else{
+
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            }
+
             imageView.setImageBitmap(mResources[position]);
 
             container.addView(itemView);
@@ -449,4 +489,64 @@ public void send(){
             return true;
         }
     }
+    private void init(Context c) {
+        ImagesArray.clear();
+        for(int i=0;i<mResources.length;i++)
+            ImagesArray.add(mResources[i]);
+
+        mPager.setAdapter(new SlidingImage_Adapter(c,ImagesArray));
+
+
+
+        indicator.setViewPager(mPager);
+
+        final float density = getResources().getDisplayMetrics().density;
+
+//Set circle indicator radius
+        indicator.setRadius(5 * density);
+
+        NUM_PAGES =mResources.length;
+
+        // Auto start of viewpager
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                mPager.setCurrentItem(currentPage++, true);
+            }
+        };
+//        Timer swipeTimer = new Timer();
+//        swipeTimer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                handler.post(Update);
+//            }
+//        }, 3000, 3000);
+
+        // Pager listener over indicator
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+
+            }
+
+            @Override
+            public void onPageScrolled(int pos, float arg1, int arg2) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int pos) {
+
+            }
+        });
+
+    }
+
+
+
 }

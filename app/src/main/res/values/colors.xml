@@ -4,5 +4,5 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#fff</color>
     <color name="recyclerBack">#e6e6e6</color>
-    
+    <color name="block">#888888</color>
 </resources>

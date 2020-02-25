@@ -3,16 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.home.ClickEvent.EventSingle">
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:id="@+id/image_event"
-        android:layout_gravity="center_horizontal"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp"
-        />
+        android:layout_margin="-10dp"
+        >
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentTop="true" />
+
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="bottom"
+            android:padding="10dip"
+            app:centered="true"
+            app:fillColor="@color/colorPrimary"
+            app:pageColor="@color/colorAccent"
+            app:snap="false" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:id="@+id/fullscreen"
+            android:src="@drawable/ic_fullscreen_black_24dp"/>
+    </RelativeLayout>
     <TextView
         android:id="@+id/name_event"
         android:layout_width="wrap_content"

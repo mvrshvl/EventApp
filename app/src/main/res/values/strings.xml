@@ -83,8 +83,8 @@
     <string name="min_between">От</string>
     <string name="max_between">До</string>
     <string name="today">Сегодня</string>
-    <string name="min_date">Начало</string>
-    <string name="max_date">Конец</string>
+    <string name="min_date">начало</string>
+    <string name="max_date">конец</string>
     <string name="drop">Сбросить</string>
     <string name="parameters">Фильтр</string>
 

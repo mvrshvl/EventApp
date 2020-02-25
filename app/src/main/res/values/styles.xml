@@ -115,6 +115,10 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@drawable/bg_dialog</item>
     </style>
+    <style name="dialogStyleImage" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/bg_dialog_image</item>
+    </style>
 
 
 

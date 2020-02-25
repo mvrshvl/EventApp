@@ -13,7 +13,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.eventapp.MainActivity.getCurrentUser;
@@ -65,5 +68,37 @@ public class Utils {
 
                     }
                 });
+    }
+    public static long getTime(String date, String time){
+        DateFormat date1 = new SimpleDateFormat("dd.MM.yyyy HH : mm");
+        long msStart = 0;
+        try {
+            Date nDate1 = date1.parse(date+" "+time);
+            msStart=nDate1.getTime();
+        }
+        catch (Exception e){
+
+        }
+
+        ////////////////////////////////////
+
+
+        return msStart;
+    }
+    public static long getDate(String date){
+        DateFormat date1 = new SimpleDateFormat("dd.MM.yyyy");
+        long msStart = 0;
+        try {
+            Date nDate1 = date1.parse(date);
+            msStart=nDate1.getTime();
+        }
+        catch (Exception e){
+
+        }
+
+        ////////////////////////////////////
+
+
+        return msStart;
     }
 }
