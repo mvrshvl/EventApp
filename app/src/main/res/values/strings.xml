@@ -56,8 +56,8 @@
     <string name="address">Адрес</string>
     <string name="date_start">Начало</string>
     <string name="date_end">Конец (необязательно)</string>
-    <string name="date">Дата</string>
-    <string name="time">Время</string>
+    <string name="date">дата</string>
+    <string name="time">время</string>
     <string name="free">Бесплатно</string>
     <string name="price_kids">Стоимость детского билета</string>
     <string name="price">Стоимость</string>

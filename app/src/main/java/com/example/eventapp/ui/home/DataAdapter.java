@@ -35,9 +35,9 @@ import java.util.UUID;
 import static com.example.eventapp.MainActivity.getCurrentUser;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.MainActivity.mFirebaseDatabase;
-import static com.example.eventapp.MainActivity.setTime;
 import static com.example.eventapp.Utils.deleteLike;
 import static com.example.eventapp.Utils.sendLike;
+import static com.example.eventapp.Utils.setTime;
 
 
 class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {

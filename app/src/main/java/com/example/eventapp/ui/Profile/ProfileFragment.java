@@ -71,13 +71,6 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
 
                 switch (v.getId()){
-                    case R.id.button_city :
-                        if(currentUser.isEmailVerified())
-                        Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.city);
-                        else
-                            Toast.makeText(getContext(), "Подтвердите почтовый адрес указанный при регистрации", Toast.LENGTH_SHORT).show();
-
-                        break;
                     case R.id.add_event :
                         if(currentUser.isEmailVerified())
                             Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.add_fragment);
@@ -106,7 +99,7 @@ public class ProfileFragment extends Fragment {
                         AlertDialog alertDialog = mDialogBuilder.create();
                         //и отображаем его:
                         alertDialog.show();
-                        alertDialog.getWindow().setLayout(1000,450);
+                        alertDialog.getWindow().setLayout(1000,340);
                         break;
                     case R.id.fav:
                         Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.fav);
@@ -121,7 +114,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         };
-        Button button_c = (Button) root.findViewById(R.id.button_city);
         Button button_a = (Button) root.findViewById(R.id.add_event);
         Button button_e=(Button)root.findViewById(R.id.exit_profile);
         Button button_f=(Button)root.findViewById(R.id.fav);
@@ -130,7 +122,6 @@ public class ProfileFragment extends Fragment {
 
         if(currentUser!=null) {
             button_a.setOnClickListener(onClickListener2);
-            button_c.setOnClickListener(onClickListener2);
             button_e.setOnClickListener(onClickListener2);
             button_f.setOnClickListener(onClickListener2);
             button_me.setOnClickListener(onClickListener2);

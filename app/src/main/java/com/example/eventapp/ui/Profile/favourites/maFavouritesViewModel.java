@@ -22,11 +22,10 @@ import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.MainActivity.mFirebaseDatabase;
 import static com.example.eventapp.ui.Profile.favourites.myFavourites.activity;
 import static com.example.eventapp.ui.Profile.favourites.myFavourites.is_loaded;
-import static com.example.eventapp.ui.Profile.favourites.myFavourites.loading;
 import static com.example.eventapp.ui.Profile.favourites.myFavourites.recyclerView;
 
 public class maFavouritesViewModel extends ViewModel {
-    private MutableLiveData<List> listData;
+    private static MutableLiveData<List> listData;
     private static List<Favourites> list_events;
     private List<Event> events;
     private String currentUser;
@@ -39,7 +38,7 @@ public class maFavouritesViewModel extends ViewModel {
         addEventFirebaseListener();
 
     }
-    public void setData(List<Event> list){
+    public static void setData(List<Event> list){
 
         listData.setValue(list);
     }
@@ -53,9 +52,6 @@ public class maFavouritesViewModel extends ViewModel {
 
     private void addEventFirebaseListener() {
         //показываем View загрузки
-
-        loading(true);
-
         mDatabaseReference.child("favourites")
                 .addValueEventListener(new ValueEventListener() {
                     //если данные в БД меняются
@@ -115,8 +111,6 @@ public class maFavouritesViewModel extends ViewModel {
                             setData(events);
 
                             recyclerView.setAdapter(adapter);
-                            //убираем View загрузки
-                            loading(false);
                             is_loaded=true;
                         }
                     }

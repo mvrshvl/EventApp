@@ -86,6 +86,9 @@ public class Event {
     private String address;
     private String id;
 
+
+    private String city;
+
     public String getUser() {
         return user;
     }
@@ -108,7 +111,13 @@ public class Event {
 
 
 
+    public String getCity() {
+        return city;
+    }
 
+    public void setCity(String city) {
+        this.city = city;
+    }
     public String getImages_path1() {
         return images_path1;
     }
@@ -136,7 +145,7 @@ public class Event {
     private String images_path2;
     private String images_path3;
 
-    public Event(String type,String name, String about, int price,int price_kids,long date,long date_end,String address,String id,String images_path1,String images_path2,String images_path3,int like,String user) {
+    public Event(String type,String name, String about, int price,int price_kids,long date,long date_end,String address,String id,String images_path1,String images_path2,String images_path3,int like,String user,String city) {
         this.type = type;
         this.name = name;
         this.about = about;
@@ -151,6 +160,7 @@ public class Event {
         this.images_path3=images_path3;
         this.like = like;
         this.user = user;
+        this.city = city;
     }
     public Event(){
 

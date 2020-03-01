@@ -40,7 +40,7 @@ import java.util.TimerTask;
 
 import static com.example.eventapp.MainActivity.getDisplay;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
-import static com.example.eventapp.MainActivity.setTime;
+import static com.example.eventapp.Utils.setTime;
 
 
 public class EventSingle extends Fragment {

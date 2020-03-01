@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventapp.Favourites;
 import com.example.eventapp.R;
+import com.example.eventapp.Utils;
 import com.example.eventapp.ui.Profile.DataAdapter;
 
 import java.util.ArrayList;
@@ -42,13 +43,20 @@ public class myEvents extends Fragment {
         tv_empty = (TextView) root.findViewById(R.id.tv_empty);
         iv_empty = (ImageView) root.findViewById(R.id.iv_empty);
         activity = getActivity();
-
+        Utils.loading(recyclerView,circular_progress,tv_empty
+                ,iv_empty,true,true);
         myEventsViewModel =
                 ViewModelProviders.of(this).get(myEventsViewModel.class);
 
         myEventsViewModel.getText().observe(this, new Observer<List>() {
             @Override
             public void onChanged(@Nullable List events) {
+                if(events.size()!=0)
+                    Utils.loading(recyclerView,circular_progress,tv_empty
+                            ,iv_empty,false,true);
+                else
+                    Utils.loading(recyclerView,circular_progress,tv_empty
+                            ,iv_empty,false,false);
                 DataAdapter adapter = new DataAdapter(getActivity(), events);
                 DataAdapter.type_screen = false;
                 recyclerView.setAdapter(adapter);
@@ -58,19 +66,4 @@ public class myEvents extends Fragment {
         return root;
     }
 
-    protected static void loading(boolean b){
-        if(b){
-            circular_progress.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.INVISIBLE);
-            tv_empty.setVisibility(View.INVISIBLE);
-            iv_empty.setVisibility(View.INVISIBLE);
-        }
-        else{
-            circular_progress.setVisibility(View.INVISIBLE);
-            recyclerView.setVisibility(View.VISIBLE);
-            tv_empty.setVisibility(View.VISIBLE);
-            iv_empty.setVisibility(View.VISIBLE);
-        }
-
-    }
 }

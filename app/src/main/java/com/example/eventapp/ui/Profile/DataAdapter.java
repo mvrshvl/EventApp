@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,8 @@ import com.example.eventapp.Favourites;
 import com.example.eventapp.MainActivity;
 import com.example.eventapp.R;
 import com.example.eventapp.Utils;
+import com.example.eventapp.ui.Profile.favourites.maFavouritesViewModel;
+import com.example.eventapp.ui.Profile.my_events.myEventsViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,6 +47,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         this.context = context;
         this.events_cards = home_fragments;
     }
+
 
 
 
@@ -126,6 +130,14 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         events_cards.remove(holder.getAdapterPosition());
         notifyItemRemoved(holder.getAdapterPosition());
         notifyItemRangeChanged(holder.getAdapterPosition(), events_cards.size());
+        //change data
+        //активируем триггер в классе myfavourites/myevents на изменение данных
+        if(type_screen){
+            maFavouritesViewModel.setData(events_cards);
+        }
+        else{
+            myEventsViewModel.setData(events_cards);
+        }
     }
     @Override
     public int getItemCount() {

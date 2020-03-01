@@ -25,10 +25,27 @@
             android:text="@string/verify_account"/>
 
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Изменить город"
+            />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="25sp"
+            android:id="@+id/city_spinner"
+            android:entries="@array/cities"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            android:id="@+id/block_moderator"
             android:orientation="horizontal">
             <TextView
                 android:layout_marginLeft="10dp"
@@ -36,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/notifications"
+                android:text="Режим модератора"
                 android:textSize="15dp"
                 />
             <Switch
@@ -44,14 +61,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:id="@+id/moderator"
                 android:theme="@style/MySwitch"
                 />
 
         </LinearLayout>
+        <Button
+            android:layout_marginTop="15dp"
+            style="@style/basicButtons"
+            android:id="@+id/add_moder"
+            android:text="Добавить модератора"/>
     </LinearLayout>
 <Button
     android:layout_marginBottom="70dp"
     android:text="@string/change_settings"
+    android:id="@+id/apply"
     android:layout_gravity="bottom"
     style="@style/continue_but"/>
 </FrameLayout>

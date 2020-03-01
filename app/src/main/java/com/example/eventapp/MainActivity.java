@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> task;
     public static int recyclerPosition=0;
     private static Display display;
+    public static boolean moderator_mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,24 +138,7 @@ public class MainActivity extends AppCompatActivity {
         return currentUser;
     }
 
-    public static String setTime(long ms){
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ms);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH);
-        month ++;
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
 
-        int minute = cal.get(Calendar.MINUTE);
-        return format(day)+"."+format(month)+" "+format(hour)+":"+ format(minute);
-    }
-
-    public static String format(int n){
-        if(n<10)
-            return "0"+n;
-        else
-            return ""+n;
-    }
     public static Point getDisplay(){
         Point size = new Point();
         display.getSize(size);

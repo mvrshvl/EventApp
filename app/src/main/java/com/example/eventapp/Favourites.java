@@ -2,7 +2,7 @@ package com.example.eventapp;
 
 public class Favourites {
     private String user;
-
+    private String event;
 
 
     public Favourites(String user, String event) {
@@ -27,5 +27,5 @@ public class Favourites {
         this.event = event;
     }
 
-    private String event;
+
 }

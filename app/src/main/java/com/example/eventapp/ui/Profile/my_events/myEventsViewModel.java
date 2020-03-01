@@ -18,12 +18,11 @@ import java.util.List;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.ui.Profile.my_events.myEvents.activity;
 import static com.example.eventapp.ui.Profile.my_events.myEvents.is_loaded;
-import static com.example.eventapp.ui.Profile.my_events.myEvents.loading;
 import static com.example.eventapp.ui.Profile.my_events.myEvents.recyclerView;
 
 
 public class myEventsViewModel extends ViewModel {
-    private MutableLiveData<List> listData;
+    private static MutableLiveData<List> listData;
     private List<Event> list_events;
     private String currentUser;
 
@@ -35,7 +34,7 @@ public class myEventsViewModel extends ViewModel {
         addEventFirebaseListener();
 
     }
-    public void setData(List<Event> list){
+    public static void setData(List<Event> list){
 
         listData.setValue(list);
     }
@@ -45,9 +44,6 @@ public class myEventsViewModel extends ViewModel {
     }
 
     private void addEventFirebaseListener() {
-        //показываем View загрузки
-
-        loading(true);
 
         mDatabaseReference.child("events")
                 .addValueEventListener(new ValueEventListener() {
@@ -71,8 +67,6 @@ public class myEventsViewModel extends ViewModel {
                             DataAdapter.type_screen = false;
                             recyclerView.setAdapter(adapter);
                             setData(list_events);
-                            //убираем View загрузки
-                            loading(false);
                             is_loaded=true;
                         }
                     }

@@ -27,10 +27,6 @@
         android:name="com.example.eventapp.ui.home.ClickEvent.EventSingle"
         tools:layout="@layout/event_fragment"/>
     <fragment
-        android:id="@+id/city"
-        android:name="com.example.eventapp.ui.Profile.city.changeCity"
-        tools:layout="@layout/change_city_fragment"/>
-    <fragment
         android:id="@+id/add_fragment"
         android:name="com.example.eventapp.ui.Profile.add.addEvent"
         tools:layout="@layout/add_event_fragment"/>

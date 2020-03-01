@@ -1,5 +1,5 @@
 package com.example.eventapp.ui.Profile.add;
-
+//тут довольно грязно,нужно обязатльно рефакторить
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,6 +29,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.eventapp.R;
+import com.example.eventapp.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +41,8 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
@@ -50,7 +53,7 @@ public class addEventFifth extends Fragment {
     private Button btnUpload;
     private ImageView imageView1,imageView2,imageView3,fullscreen,delete;
     private Boolean fullscreen_flag=false;
-
+    private String toast_check = "Заполните обязательные поля";
 
 
     private Uri[] uploadFilesUri = new Uri[3];
@@ -168,7 +171,7 @@ public class addEventFifth extends Fragment {
                         }
                         else
                         {
-                            //Toast.makeText(getContext(), "Заполните все обязательные поля", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), toast_check, Toast.LENGTH_SHORT).show();
                         }
                         break;
                         //очень большая логика обработки показа изображения
@@ -466,9 +469,14 @@ public void send(){
         }
     }
     private boolean checkData(){
+        //DATE
+        long start;
+        long end;
+        //////
         addEventFour.setData();
         addEventThird.setData();
         addEventSecond.setData();
+
         if(AddEventViewModel.getDate()==null||AddEventViewModel.getTime()==null||AddEventViewModel.getPrice()==-1||AddEventViewModel.getAddress()==null){
             addEvent.next(2);
             return false;
@@ -486,7 +494,26 @@ public void send(){
         }
         else
         {
-            return true;
+
+            start = Utils.getTime(AddEventViewModel.getDate(), AddEventViewModel.getTime());
+            if(AddEventViewModel.getDate_end().toLowerCase().equals(getString(R.string.date))){
+                if(AddEventViewModel.getTime_end().toLowerCase().equals(getString(R.string.time))){
+                    AddEventViewModel.setTime_end("23 : 59");
+                }
+                end = Utils.getEndToday(start);
+
+                String[] date_time = Utils.normalizeDate(end);
+                AddEventViewModel.setDate_end(date_time[0]);
+                AddEventViewModel.setTime_end(date_time[1]);
+            }
+            end = Utils.getTime(AddEventViewModel.getDate_end(), AddEventViewModel.getTime_end());
+            toast_check = Utils.checkDate(start,end);
+            if (toast_check == "OK")
+                return true;
+            else {
+                addEvent.next(2);
+                return false;
+            }
         }
     }
     private void init(Context c) {

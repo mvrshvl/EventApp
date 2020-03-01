@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.eventapp.MainActivity;
 import com.example.eventapp.User;
+import com.example.eventapp.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 
+import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.MainActivity.mFirebaseDatabase;
 
 public class SettingsViewModel extends ViewModel {
@@ -19,6 +21,7 @@ public class SettingsViewModel extends ViewModel {
     private static String password;
     private static boolean  flag = false;
     private static boolean  password_success = false;
+    private static String city = User.getCity();
 
     protected static void sendChanges(final String arg1,final String arg2, final int type){
         flag = false;
@@ -44,4 +47,13 @@ public class SettingsViewModel extends ViewModel {
     public void setDialogState(int i){
         dialogState = i;
     }
+    public static void setCity(String new_city){
+        city = new_city;
+        Utils.setNewCity(new_city);
+    }
+    public  static String getCity(){
+        return city;
+    }
+
+
 }

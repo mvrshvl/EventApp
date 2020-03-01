@@ -20,44 +20,66 @@ AddEventViewModel AddEventViewModel;
         return new addEventFirst();
     }
 
+    Button exhibition;
+    Button concert;
+    Button theatre ;
+    Button party;
+    Button master_class;
+    Button kids;
+    Button active;
+    Button fair;
+    Button excursion;
+    Button cinema ;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.add_event_first_step, container, false);
+        exhibition = (Button) root.findViewById(R.id.exhibition);
+
+        concert = (Button) root.findViewById(R.id.concert);
+         theatre = (Button) root.findViewById(R.id.theatre);
+         party = (Button) root.findViewById(R.id.party);
+         master_class = (Button) root.findViewById(R.id.master_class);
+         kids = (Button) root.findViewById(R.id.kids);
+         active = (Button) root.findViewById(R.id.active);
+         fair = (Button) root.findViewById(R.id.fair);
+         excursion = (Button) root.findViewById(R.id.excursion);
+         cinema = (Button) root.findViewById(R.id.cinema);
         View.OnClickListener onClickListener1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 switch (v.getId()){
                     case R.id.concert :
-                        AddEventViewModel.setType("Консерт");
+                        AddEventViewModel.setType(concert.getText().toString());
                         break;
                     case R.id.theatre :
-                        AddEventViewModel.setType("Театр");
+                        AddEventViewModel.setType(theatre.getText().toString());
                         break;
                     case R.id.party :
-                        AddEventViewModel.setType("Вечеринка");
+                        AddEventViewModel.setType(party.getText().toString());
                         break;
                     case R.id.master_class :
-                        AddEventViewModel.setType("Мастер класс");
+                        AddEventViewModel.setType(master_class.getText().toString());
                         break;
                     case R.id.kids :
-                        AddEventViewModel.setType("Детям");
+                        AddEventViewModel.setType(kids.getText().toString());
                         break;
                     case R.id.active :
-                        AddEventViewModel.setType("Активный отдых");
+                        AddEventViewModel.setType(active.getText().toString());
                         break;
                     case R.id.fair :
-                        AddEventViewModel.setType("Ярмарка");
+                        AddEventViewModel.setType(fair.getText().toString());
                         break;
                     case R.id.excursion :
-                        AddEventViewModel.setType("Экскурсия");
+                        AddEventViewModel.setType(excursion.getText().toString());
                         break;
                     case R.id.exhibition :
-                        AddEventViewModel.setType("Выставка");
+                        AddEventViewModel.setType(exhibition.getText().toString());
                         break;
                     case R.id.cinema :
-                        AddEventViewModel.setType("Кино");
+                        AddEventViewModel.setType(cinema.getText().toString());
                         break;
 
                 }
@@ -66,16 +88,16 @@ AddEventViewModel AddEventViewModel;
             }
 
         };
-        Button exhibition = (Button) root.findViewById(R.id.exhibition); exhibition.setOnClickListener(onClickListener1);
-        Button concert = (Button) root.findViewById(R.id.concert); concert.setOnClickListener(onClickListener1);
-        Button theatre = (Button) root.findViewById(R.id.theatre); theatre.setOnClickListener(onClickListener1);
-        Button party = (Button) root.findViewById(R.id.party); party.setOnClickListener(onClickListener1);
-        Button master_class = (Button) root.findViewById(R.id.master_class); master_class.setOnClickListener(onClickListener1);
-        Button kids = (Button) root.findViewById(R.id.kids); kids.setOnClickListener(onClickListener1);
-        Button active = (Button) root.findViewById(R.id.active); active.setOnClickListener(onClickListener1);
-        Button fair = (Button) root.findViewById(R.id.fair); fair.setOnClickListener(onClickListener1);
-        Button excursion = (Button) root.findViewById(R.id.excursion); excursion.setOnClickListener(onClickListener1);
-        Button cinema = (Button) root.findViewById(R.id.cinema); cinema.setOnClickListener(onClickListener1);
+         exhibition.setOnClickListener(onClickListener1);
+        concert.setOnClickListener(onClickListener1);
+         theatre.setOnClickListener(onClickListener1);
+        party.setOnClickListener(onClickListener1);
+        master_class.setOnClickListener(onClickListener1);
+        kids.setOnClickListener(onClickListener1);
+        active.setOnClickListener(onClickListener1);
+        fair.setOnClickListener(onClickListener1);
+        excursion.setOnClickListener(onClickListener1);
+        cinema.setOnClickListener(onClickListener1);
 
 
         return root;

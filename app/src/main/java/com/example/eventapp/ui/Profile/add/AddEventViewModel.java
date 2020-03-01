@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.eventapp.Event;
 import com.example.eventapp.MainActivity;
+import com.example.eventapp.User;
+import com.example.eventapp.Utils;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -16,6 +18,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+
+import okhttp3.internal.Util;
 
 public class AddEventViewModel extends ViewModel {
 
@@ -94,19 +98,12 @@ public class AddEventViewModel extends ViewModel {
     }
 
     public void sendData() throws ParseException {
-        DateFormat date1 = new SimpleDateFormat("dd.MM.yyyy HH : mm");
 
-        Date nDate1 = date1.parse(date+" "+time);
         ////////////////////////////////////
 
 
-        long msStart=nDate1.getTime();
-        long msEnd;
-        if(time_end!=null||date_end!=null){
-            Date nDate2 = date1.parse(date_end+" "+time_end);
-             msEnd=nDate2.getTime();
-        }
-        else msEnd=0;
+        long msStart= Utils.getTime(date,time);
+        long msEnd = Utils.getTime(date_end,time_end);
         String id = UUID.randomUUID().toString();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -122,7 +119,7 @@ public class AddEventViewModel extends ViewModel {
          images_path3=images_path[2].toString();
         else
             images_path3="";
-        Event event = new Event(type,name,about,price,price_kids,msStart,msEnd,address,id,images_path1,images_path2,images_path3,0,MainActivity.getCurrentUser().getUid());
+        Event event = new Event(type,name,about,price,price_kids,msStart,msEnd,address,id,images_path1,images_path2,images_path3,0,MainActivity.getCurrentUser().getUid(), User.getCity());
         MainActivity.mDatabaseReference.child("events").child(event.getId()).setValue(event);
     }
 
