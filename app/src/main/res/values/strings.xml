@@ -24,6 +24,12 @@
         <item>Уфа</item>
         <item>Волгоград</item>
     </string-array>
+    <string-array name="sort">
+        <item>По дате</item>
+        <item>По популярности</item>
+        <item>По цене</item>
+    </string-array>
+
     <string name="city_true">Ваш город: </string>
     <string name="city_false">Геопозиция отключена</string>
     <string name="select_type">Выберите тип мероприятия</string>
@@ -87,9 +93,14 @@
     <string name="max_date">конец</string>
     <string name="drop">Сбросить</string>
     <string name="parameters">Фильтр</string>
+    <string name="ok_s">Принять</string>
+    <string name="ok_true_s">Принято</string>
+    <string name="ban_s">Отклонить</string>
+    <string name="ban_true_s">Отклонено</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

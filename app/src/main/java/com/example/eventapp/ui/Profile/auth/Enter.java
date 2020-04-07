@@ -59,8 +59,9 @@ public class Enter extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         return root;
     }
-
+    //авторизация
     public void signing(String mail,String pass){
+        //Создаем запрос к серверу, передаем введенные логин пароль
         mAuth.signInWithEmailAndPassword(mail,pass)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -68,6 +69,7 @@ public class Enter extends Fragment {
                         if(task.isSuccessful()){
                             visibleMenu(true);
                             //user = mAuth.getCurrentUser();
+                            //еси всё удачно переключаемся на само приожение
                             Navigation.findNavController(getActivity(),R.id.nav_host_fragment).popBackStack();
                             Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.navigation_home);
                             circularProgress.setVisibility(View.INVISIBLE);

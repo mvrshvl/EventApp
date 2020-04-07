@@ -5,4 +5,7 @@
     <color name="colorAccent">#fff</color>
     <color name="recyclerBack">#e6e6e6</color>
     <color name="block">#888888</color>
+    <color name="banned">#30ff0000</color>
+    <color name="ok">#3000FF00</color>
+
 </resources>

@@ -86,7 +86,17 @@ public class Event {
     private String address;
     private String id;
 
+    public int getState() {
+        return state;
+    }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    private int state;
+
+//4 состояния 0 - ожидает проверки,1 - допущено, 2- заблокировано,3 - истекло
     private String city;
 
     public String getUser() {
@@ -145,7 +155,17 @@ public class Event {
     private String images_path2;
     private String images_path3;
 
-    public Event(String type,String name, String about, int price,int price_kids,long date,long date_end,String address,String id,String images_path1,String images_path2,String images_path3,int like,String user,String city) {
+    public int getDiss() {
+        return diss;
+    }
+
+    public void setDiss(int diss) {
+        this.diss = diss;
+    }
+
+    private int diss;
+
+    public Event(String type,String name, String about, int price,int price_kids,long date,long date_end,String address,String id,String images_path1,String images_path2,String images_path3,int like,String user,String city, int state,int diss) {
         this.type = type;
         this.name = name;
         this.about = about;
@@ -161,10 +181,13 @@ public class Event {
         this.like = like;
         this.user = user;
         this.city = city;
+        this.state = state;
+        this.diss = diss;
     }
     public Event(){
 
     }
+
 }
 
 

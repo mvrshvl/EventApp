@@ -2,11 +2,13 @@ package com.example.eventapp.ui.home;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,9 @@ import java.util.UUID;
 import static com.example.eventapp.MainActivity.getCurrentUser;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.MainActivity.mFirebaseDatabase;
+import static com.example.eventapp.MainActivity.moderator_mode;
+import static com.example.eventapp.MainActivity.ref_color_ban;
+import static com.example.eventapp.MainActivity.ref_color_ok;
 import static com.example.eventapp.Utils.deleteLike;
 import static com.example.eventapp.Utils.sendLike;
 import static com.example.eventapp.Utils.setTime;
@@ -119,8 +124,13 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                 }
             });
         }
-
-
+        //разметка типов дя модератеров
+        if(moderator_mode) {
+            if (home_fragments.get(position).getState() == 1)
+                holder.parent.setBackgroundColor(ref_color_ok);
+            else if (home_fragments.get(position).getState() == 2)
+                holder.parent.setBackgroundColor(ref_color_ban);
+        }
         holder.nameView.setText(name);
         holder.dateView.setText(date);
         holder.typeView.setText(type);
@@ -171,12 +181,14 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        final LinearLayout parent;
         final ImageView imageView, b_like;
         final TextView nameView, dateView, typeView,likeView;
         CardView cv;
         ViewHolder(View view){
             super(view);
             cv = (CardView)itemView.findViewById(R.id.card_view);
+            parent = (LinearLayout) itemView.findViewById(R.id.parent_home);
             imageView = (ImageView)view.findViewById(R.id.image);
             nameView = (TextView) view.findViewById(R.id.name);
             dateView = (TextView) view.findViewById(R.id.date);

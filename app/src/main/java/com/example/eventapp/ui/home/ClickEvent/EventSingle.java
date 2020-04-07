@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +41,7 @@ import java.util.TimerTask;
 
 import static com.example.eventapp.MainActivity.getDisplay;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
+import static com.example.eventapp.MainActivity.moderator_mode;
 import static com.example.eventapp.Utils.setTime;
 
 
@@ -57,12 +59,16 @@ public class EventSingle extends Fragment {
     private static int currentPage = 0;
     CirclePageIndicator indicator;
     private static int NUM_PAGES = 0;
-    private static String[] IMAGES;
+    private static List<String> IMAGES;
     private ArrayList<String> ImagesArray = new ArrayList<String>();
     //VIEWPAGER IN
     private static ViewPager mPager_in;
     private CirclePageIndicator indicator_in;
     private int public_position =0;
+    private Button ok_bt;
+    private Button ban_bt;
+    private Button diss_bt;
+    private Event event;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -71,10 +77,14 @@ public class EventSingle extends Fragment {
         final TextView date_tv =(TextView) root.findViewById(R.id.date_event);
         final TextView name_tv = (TextView) root.findViewById(R.id.name_event);
         final ImageView full = (ImageView) root.findViewById(R.id.fullscreen);
+        ok_bt = (Button) root.findViewById(R.id.ok_bt);
+        ban_bt = (Button) root.findViewById(R.id.bun_bt);
+        diss_bt = (Button)root.findViewById(R.id.diss_but);
+
         //PAGER
         mPager_in = (ViewPager) root.findViewById(R.id.pager);
         indicator_in = (CirclePageIndicator) root.findViewById(R.id.indicator);
-        IMAGES = new String[3];
+
         //////
 
 
@@ -124,17 +134,37 @@ public class EventSingle extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Event e = dataSnapshot.getValue(Event.class);
-
                 name = e.getName();
                 long ms = e.getDate();
                 date = setTime(ms);
-                IMAGES[0] = e.getImages_path1();
-                IMAGES[1] = e.getImages_path1();
-                IMAGES[2] = e.getImages_path1();
+
+                IMAGES = new ArrayList<>();
+                if(!e.getImages_path1().isEmpty())
+                    IMAGES.add(e.getImages_path1());
+                if(!e.getImages_path2().isEmpty())
+                    IMAGES.add(e.getImages_path2());
+                if(!e.getImages_path3().isEmpty())
+                    IMAGES.add(e.getImages_path3());
                 initIn();
                 date_tv.setText(date);
                 name_tv.setText(name);
 
+
+                if(moderator_mode){
+                    if(e.getState()==1) {
+                        setOk();
+                    }
+                    else if(e.getState()==2) {
+                        setBan();
+                    }
+                    else{
+                        ban_bt.setText(getResources().getString(R.string.ban_s));
+                        ok_bt.setText(getResources().getString(R.string.ok_s));
+                    }
+                }
+
+
+                event = e;
             }
 
             @Override
@@ -143,14 +173,35 @@ public class EventSingle extends Fragment {
             }
         });
 
-
+        //moderator
+        if(moderator_mode){
+            ok_bt.setVisibility(View.VISIBLE);
+            ban_bt.setVisibility(View.VISIBLE);
+            diss_bt.setVisibility(View.INVISIBLE);
+            diss_bt.setHeight(0);
+        }
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.ok_bt:
+                        allow();
+                        break;
+                    case R.id.bun_bt:
+                        deny();
+                        break;
+                }
+            }
+        };
+        ok_bt.setOnClickListener(onClickListener);
+        ban_bt.setOnClickListener(onClickListener);
         return root;
     }
     //Полноэкранный пэйджер
     private void init(Context c) {
         ImagesArray.clear();
-        for(int i=0;i<IMAGES.length;i++)
-            ImagesArray.add(IMAGES[i]);
+        for(int i=0;i<IMAGES.size();i++)
+            ImagesArray.add(IMAGES.get(i));
 
         mPager.setAdapter(new SlidingImage_Adapter(c,ImagesArray));
 
@@ -161,7 +212,7 @@ public class EventSingle extends Fragment {
         //Set circle indicator radius
         indicator.setRadius(5 * density);
 
-        NUM_PAGES =IMAGES.length;
+        NUM_PAGES =IMAGES.size();
 
         // Pager listener over indicator
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -187,8 +238,8 @@ public class EventSingle extends Fragment {
     //Внутренний пэйджер
     private void initIn() {
         ImagesArray.clear();
-        for(int i=0;i<IMAGES.length;i++)
-            ImagesArray.add(IMAGES[i]);
+        for(int i=0;i<IMAGES.size();i++)
+            ImagesArray.add(IMAGES.get(i));
 
         SlidingImage_Adapter.setFlag(true);
         mPager_in.setAdapter(new SlidingImage_Adapter(getContext(),ImagesArray));
@@ -199,7 +250,7 @@ public class EventSingle extends Fragment {
 
 //Set circle indicator radius
         indicator_in.setRadius(5 * density);
-        NUM_PAGES =IMAGES.length;
+        NUM_PAGES =IMAGES.size();
 
         // Pager listener over indicator
         indicator_in.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -230,4 +281,26 @@ public class EventSingle extends Fragment {
         mPager_in.setCurrentItem(public_position, true);
     }
 
+    public void allow(){
+        if(event.getState()!=1){
+            setOk();
+            //send
+            Utils.setNewState(event,1);
+        }
+    }
+    public void deny(){
+        if(event.getState()!=2){
+            setBan();
+            Utils.setNewState(event,2);
+            //send
+        }
+    }
+    private void setBan(){
+        ban_bt.setText(getResources().getString(R.string.ban_true_s));
+        ok_bt.setText(getResources().getString(R.string.ok_s));
+    }
+    private void setOk(){
+        ban_bt.setText(getResources().getString(R.string.ban_s));
+        ok_bt.setText(getResources().getString(R.string.ok_true_s));
+    }
 }

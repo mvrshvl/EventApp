@@ -25,6 +25,7 @@ public class SettingsViewModel extends ViewModel {
 
     protected static void sendChanges(final String arg1,final String arg2, final int type){
         flag = false;
+        
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         password_success = mAuth.signInWithEmailAndPassword(MainActivity.getCurrentUser().getEmail(),arg1).isSuccessful();
             if(type == 1 & !arg1.isEmpty()){

@@ -119,7 +119,7 @@ public class AddEventViewModel extends ViewModel {
          images_path3=images_path[2].toString();
         else
             images_path3="";
-        Event event = new Event(type,name,about,price,price_kids,msStart,msEnd,address,id,images_path1,images_path2,images_path3,0,MainActivity.getCurrentUser().getUid(), User.getCity());
+        Event event = new Event(type,name,about,price,price_kids,msStart,msEnd,address,id,images_path1,images_path2,images_path3,0,MainActivity.getCurrentUser().getUid(), User.getCity(),0,0);
         MainActivity.mDatabaseReference.child("events").child(event.getId()).setValue(event);
     }
 

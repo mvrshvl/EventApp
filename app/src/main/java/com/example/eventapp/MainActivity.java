@@ -41,10 +41,14 @@ public class MainActivity extends AppCompatActivity {
     public static int recyclerPosition=0;
     private static Display display;
     public static boolean moderator_mode;
+    public static int ref_color_ok;
+    public static int ref_color_ban;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ref_color_ok = getResources().getColor(R.color.ok);
+        ref_color_ban = getResources().getColor(R.color.banned);
         setContentView(R.layout.activity_main);
         navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         //настраиваем экран
         display = getWindowManager().getDefaultDisplay();
 
+        //инициализируем авторизацию приложения
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     visibleMenu(false);
+                    //еси пльзоватеь не авторизован в приложении переводим на экран регистрации/авторизации
                     Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.auth);
                 }
             }
@@ -90,9 +96,12 @@ public class MainActivity extends AppCompatActivity {
         if (ev.getAction() ==  MotionEvent.ACTION_DOWN) hideKeyboard();
         return super.dispatchTouchEvent(ev);
     }
+
     private void initFirebase(){
+        //Соединяемся с сервером
         FirebaseApp.initializeApp(this);
         mFirebaseDatabase=FirebaseDatabase.getInstance();
+        //Создаем ссылку на базу данных для дальнейшего общения
         mDatabaseReference=mFirebaseDatabase.getReference();
     }
 

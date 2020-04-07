@@ -53,4 +53,35 @@
         android:layout_gravity="left"
         android:paddingLeft="30dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/moder_block">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                style="@style/But_block"
+                android:id="@+id/bun_bt"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                style="@style/But_ok"
+                android:id="@+id/ok_bt"/>
+        </LinearLayout>
+        <Button
+            style="@style/continue_but"
+            android:text="Пожаловаться"
+            android:id="@+id/diss_but"
+            />
+    </RelativeLayout>
 </LinearLayout>

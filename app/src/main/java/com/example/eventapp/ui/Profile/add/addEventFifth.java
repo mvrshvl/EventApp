@@ -29,6 +29,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.eventapp.R;
+import com.example.eventapp.User;
 import com.example.eventapp.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -476,7 +477,12 @@ public void send(){
         addEventFour.setData();
         addEventThird.setData();
         addEventSecond.setData();
-
+        //address
+        double coord [] = Utils.getCoord(User.getCity(),AddEventViewModel.getAddress(),getContext());
+        if(coord[0]==0.0 & coord[1]==0.0){
+            toast_check = "По адресу: " + User.getCity() + ", " + AddEventViewModel.getAddress() + " ничего не найдено.";
+            return false;
+        }
         if(AddEventViewModel.getDate()==null||AddEventViewModel.getTime()==null||AddEventViewModel.getPrice()==-1||AddEventViewModel.getAddress()==null){
             addEvent.next(2);
             return false;
@@ -573,7 +579,5 @@ public void send(){
         });
 
     }
-
-
 
 }

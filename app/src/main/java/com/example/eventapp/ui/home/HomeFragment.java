@@ -45,22 +45,45 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.example.eventapp.MainActivity.getDisplay;
-import static com.example.eventapp.MainActivity.mDatabaseReference;
+import static com.example.eventapp.ui.home.HomeViewModel.dateEn_b;
+import static com.example.eventapp.ui.home.HomeViewModel.dateSt_b;
 import static com.example.eventapp.ui.home.HomeViewModel.getFilter_hash;
-import static com.example.eventapp.ui.home.HomeViewModel.isPrice;
-import static com.example.eventapp.ui.home.HomeViewModel.isPrice_kids;
-import static com.example.eventapp.ui.home.HomeViewModel.isToday;
+import static com.example.eventapp.ui.home.HomeViewModel.getOrderIndex;
+import static com.example.eventapp.ui.home.HomeViewModel.maxPrice_et;
+import static com.example.eventapp.ui.home.HomeViewModel.maxPrice_k_et;
+import static com.example.eventapp.ui.home.HomeViewModel.minPrice_et;
+import static com.example.eventapp.ui.home.HomeViewModel.minPrice_k_et;
+import static com.example.eventapp.ui.home.HomeViewModel.priceMin;
+import static com.example.eventapp.ui.home.HomeViewModel.price_cb;
+import static com.example.eventapp.ui.home.HomeViewModel.price_kids_cb;
 import static com.example.eventapp.ui.home.HomeViewModel.setFilter_hash;
-import static com.example.eventapp.ui.home.HomeViewModel.setPrice;
-import static com.example.eventapp.ui.home.HomeViewModel.setPrice_kids;
-import static com.example.eventapp.ui.home.HomeViewModel.setToday;
-import static com.example.eventapp.ui.home.filter.filtration;
+import static com.example.eventapp.ui.home.HomeViewModel.setOrder;
+import static com.example.eventapp.ui.home.HomeViewModel.today_cb;
+import static com.example.eventapp.ui.home.HomeViewModel.type;
+import static com.example.eventapp.ui.home.HomeViewModel.type_index;
+import static com.example.eventapp.ui.home.filter.clearFilter;
+import static com.example.eventapp.ui.home.filter.setType;
 
 public class HomeFragment extends Fragment {
-    private List<Event> list_events= new ArrayList<>();
-    private List<Event> current_list = new ArrayList<>();
+    Spinner dialog_type;
+    Spinner sort_type;
+
+    EditText price_min;
+    EditText price_max;
+    CheckBox free;
+
+    EditText price_kids_min;
+    EditText price_kids_max;
+    CheckBox free_kids;
+
+    Button date_min;
+    Button date_max;
+    CheckBox today;
+
+
+    public static List<Event> list_events= new ArrayList<>();
+    public static List<Event> current_list = new ArrayList<>();
     private HomeViewModel homeViewModel;
-    public Fragment old;
     public static ProgressBar circular_progress;
     public static RecyclerView recyclerView;
     private static TextView tv_empty;
@@ -70,12 +93,14 @@ public class HomeFragment extends Fragment {
     private HashMap<String,List> filter_hash;
     private EditText search;
     DataAdapter adapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        //Инит элементов
         circular_progress = (ProgressBar) root.findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) root.findViewById(R.id.list);
         tv_empty = (TextView) root.findViewById(R.id.tv_empty);
@@ -84,26 +109,31 @@ public class HomeFragment extends Fragment {
                 ,iv_empty,true,true);
         bt_filter = (ImageButton) root.findViewById(R.id.filter_but);
         search = (EditText) root.findViewById(R.id.search);
-        HomeViewModel.addEventFirebaseListener();
-        homeViewModel.getData().observe(this, new Observer<List>() {
-            @Override
-            public void onChanged(@Nullable List events) {
-                adapter = new DataAdapter(getActivity(), events);
-                list_events = events;
-                current_list = events;
-                if(events.size()!=0)
-                    Utils.loading(recyclerView,circular_progress,tv_empty
-                            ,iv_empty,false,true);
-                else
-                    Utils.loading(recyclerView,circular_progress,tv_empty
-                            ,iv_empty,false,false);
-                recyclerView.setAdapter(adapter);            }
-        });
-        //Toast.makeText(getContext(), "Обновление", Toast.LENGTH_SHORT).show();
+        //Грузим контент
+        if(HomeViewModel.getData().getValue() == null)
+        {
+            clearFilter();
+            HomeViewModel.addEventFirebaseListener();
+        }
+
+            HomeViewModel.getData().observe(this, new Observer<List>() {
+                @Override
+                public void onChanged(@Nullable List events) {
+                    adapter = new DataAdapter(getActivity(), events);
+                    list_events = events;
+                    current_list = events;
+                    if(events.size()!=0)
+                        Utils.loading(recyclerView,circular_progress,tv_empty
+                                ,iv_empty,false,true);
+                    else
+                        Utils.loading(recyclerView,circular_progress,tv_empty
+                                ,iv_empty,false,false);
+                    recyclerView.setAdapter(adapter);            }
+            });
+                //перехватываем загруженный контент
+
         is_loaded = false;
 
-        //FILTRATION
-        filter_hash = new HashMap<>();
         bt_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,19 +147,20 @@ public class HomeFragment extends Fragment {
                 mDialogBuilder.setView(promptsView);
 
                 //Настраиваем отображение поля для ввода текста в открытом диалоге:
-                final Spinner dialog_type = (Spinner) promptsView.findViewById(R.id.types);
+                dialog_type = (Spinner) promptsView.findViewById(R.id.types);
+                sort_type   = (Spinner) promptsView.findViewById(R.id.sort);
 
-                final EditText price_min = (EditText) promptsView.findViewById(R.id.min_between);
-                final EditText price_max = (EditText) promptsView.findViewById(R.id.max_between);
-                final CheckBox free   = (CheckBox) promptsView.findViewById(R.id.price_free);
+                price_min = (EditText) promptsView.findViewById(R.id.min_between);
+                price_max = (EditText) promptsView.findViewById(R.id.max_between);
+                free   = (CheckBox) promptsView.findViewById(R.id.price_free);
 
-                final EditText price_kids_min = (EditText) promptsView.findViewById(R.id.min_between_k);
-                final EditText price_kids_max = (EditText) promptsView.findViewById(R.id.max_between_k);
-                final CheckBox free_kids   = (CheckBox) promptsView.findViewById(R.id.price_free_kids);
+                price_kids_min = (EditText) promptsView.findViewById(R.id.min_between_k);
+                price_kids_max = (EditText) promptsView.findViewById(R.id.max_between_k);
+                free_kids   = (CheckBox) promptsView.findViewById(R.id.price_free_kids);
 
-                final Button date_min = (Button) promptsView.findViewById(R.id.min_date);
-                final Button date_max = (Button) promptsView.findViewById(R.id.max_date);
-                final CheckBox today   = (CheckBox) promptsView.findViewById(R.id.today);
+                date_min = (Button) promptsView.findViewById(R.id.min_date);
+                date_max = (Button) promptsView.findViewById(R.id.max_date);
+                today   = (CheckBox) promptsView.findViewById(R.id.today);
 
 
 
@@ -147,56 +178,13 @@ public class HomeFragment extends Fragment {
                                 date_time_2.callDatePicker(date_max, promptsView);
                                 break;
                             case R.id.today:
-                                if(today.isChecked())
-                                {
-                                    setToday(true);
-                                    date_min.setClickable(false);
-                                    date_max.setClickable(false);
-                                    date_min.setText(getResources().getText(R.string.min_date));
-                                    date_max.setText(getResources().getText(R.string.max_date));
-
-                                }
-                                else{
-                                    setToday(false);
-                                    date_min.setClickable(true);
-                                    date_max.setClickable(true);
-                                }
+                                setToday(today.isChecked());
                                 break;
                             case R.id.price_free:
-                                if(free.isChecked()){
-                                    setPrice(true);
-                                    setPrice_kids(true);
-                                    price_min.setEnabled(false);
-                                    price_max.setEnabled(false);
-                                    price_kids_max.setEnabled(false);
-                                    price_kids_min.setEnabled(false);
-                                    free_kids.setChecked(true);
-                                    free_kids.setEnabled(false);
-
-                                }
-                                else{
-                                    setPrice(false);
-                                    setPrice_kids(false);
-                                    price_min.setEnabled(true);
-                                    price_max.setEnabled(true);
-                                    price_kids_max.setEnabled(true);
-                                    price_kids_min.setEnabled(true);
-                                    free_kids.setChecked(false);
-                                    free_kids.setEnabled(true);
-                                }
+                                setFree(free.isChecked());
                                 break;
                             case R.id.price_free_kids:
-                                if(free_kids.isChecked())
-                                {
-                                    setPrice_kids(true);
-                                    price_kids_max.setEnabled(false);
-                                    price_kids_min.setEnabled(false);
-                                }
-                                else{
-                                    setPrice_kids(false);
-                                    price_kids_max.setEnabled(true);
-                                    price_kids_min.setEnabled(true);
-                                }
+                                setFreeKids(free_kids.isChecked());
                                 break;
 
                         }
@@ -213,84 +201,40 @@ public class HomeFragment extends Fragment {
                             //Настраиваем сообщение в диалоговом окне:
                 mDialogBuilder
 
-                        .setCancelable(false)
+                        .setCancelable(true)
                         .setTitle(R.string.parameters)
                         .setPositiveButton(R.string.continue_but,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
-                                        //получаем если таковой есть сохраненный фильтр
-                                        filter_hash = getFilter_hash();
+                                        //Грузим
+                                        //Выставляю прогресс
+                                        Utils.loading(recyclerView,circular_progress,tv_empty
+                                                ,iv_empty,true,true);
+
+                                        //запоминаем фильтры
+                                        setType(dialog_type.getSelectedItem().toString(),getResources().getStringArray(R.array.types));
+                                        filter.setPrice(free.isChecked(),free_kids.isChecked(),
+                                                price_min.getText().toString(),
+                                                price_max.getText().toString(),
+                                                price_kids_min.getText().toString(),
+                                                price_kids_max.getText().toString());
+                                        filter.setDate(today.isChecked(),
+                                                date_min.getText().toString(),
+                                                date_max.getText().toString());
+                                        setOrder(sort_type.getSelectedItem().toString());
 
 
-                                        //TYPE
-                                        List<String> local_list = new ArrayList<>();
-                                        if(!dialog_type.getSelectedItem().toString().equals("Тип")){
-                                            local_list.add(dialog_type.getSelectedItem().toString());
-                                            filter_hash.put("type",local_list);
-                                        }
-                                        filter_hash.put("type",local_list);
-                                        //PRICE
-                                        List<Integer> price_list = checkPrice(free,price_min,price_max);
-                                        filter_hash.put("price",price_list);
-                                        List<Integer> price_list_kids = checkPrice(free_kids,price_kids_min,price_kids_max);
-                                        filter_hash.put("price_kids",price_list_kids);
-                                        //DATE
-                                        List<Long> date_list = new ArrayList<>();
-                                        if(today.isChecked()){
-                                            Calendar calendar = new GregorianCalendar();
-                                            long today = calendar.getTimeInMillis();
-                                            date_list.add(today);
-                                            date_list.add(Utils.getEndToday(today));
-                                        }
-                                        else if(!date_min.getText().toString().toLowerCase().equals("начало") &
-                                                date_max.getText().toString().toLowerCase().equals("конец")){
-                                            long date = Utils.getDate(date_min.getText().toString());
-                                            date_list.add(date);
-                                            date_list.add(Utils.getEndToday(date));
-                                        }
-                                        else if(date_min.getText().toString().toLowerCase().equals("начало") &
-                                                !date_max.getText().toString().toLowerCase().equals("конец")){
-                                            long date = Utils.getDate(date_max.getText().toString());
-                                            date_list.add(Utils.getStartToday(date));
-                                            date_list.add(date);
-                                        }
-                                        else if(!date_min.getText().toString().toLowerCase().equals("начало") &
-                                                !date_max.getText().toString().toLowerCase().equals("конец")){
-                                            long date = Utils.getDate(date_min.getText().toString());
-                                            date_list.add(date);
-                                            date = Utils.getDate(date_max.getText().toString());
-                                            date_list.add(date);
-                                        }
-                                        filter_hash.put("date",date_list);
-                                        //сохраняем строковый эквивалент чтобы не переводить по сто раз
-                                        List<String> dates_string = new ArrayList<>();
-                                        dates_string.add(date_min.getText().toString());
-                                        dates_string.add(date_max.getText().toString());
-                                        filter_hash.put("date_string",dates_string);
-                                        if(          local_list.size()!=0 |
-                                                     price_list.size()!=0 |
-                                                price_list_kids.size()!=0 |
-                                                     date_list.size()!=0) {
-                                            current_list = filtration(list_events, filter_hash);
-                                            reload(current_list);
-                                        }
-                                        else {
-                                            reload(list_events);
-                                            current_list = list_events;
-//                                            Utils.loading(recyclerView,circular_progress,tv_empty
-//                                                    ,iv_empty,false,true);
-                                        }
-                                    setFilter_hash(filter_hash);
                                     }
                                 })
                         .setNegativeButton(R.string.drop,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
-                                        filter_hash.clear();
-                                        setFilter_hash(filter_hash);
                                         dialog.cancel();
+                                        clearFilter();
+                                        setOrder("По дате");
                                         reload(list_events);
-                                        current_list = list_events;
+
+
 //                                        Utils.loading(recyclerView,circular_progress,tv_empty
 //                                                ,iv_empty,false,true);
                                     }
@@ -302,9 +246,25 @@ public class HomeFragment extends Fragment {
                 //и отображаем его:
                 alertDialog.show();
                 Point size = getDisplay();
-                alertDialog.getWindow().setLayout(size.x,size.y*3/5);
+                alertDialog.getWindow().setLayout(size.x,size.y*4/6);
                 alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+                sort_type.setSelection(getOrderIndex());
                 //если есть в фильтрах значения то восстанавливаем их в диалоговое окно
+                //type
+                dialog_type.setSelection(type_index);
+                setFree(price_cb);
+                setFreeKids(price_kids_cb);
+                setToday(today_cb);
+                price_min.setText(minPrice_et);
+                price_max.setText(maxPrice_et);
+                price_kids_min.setText(minPrice_k_et);
+                price_kids_max.setText(maxPrice_k_et);
+                date_min.setText(dateSt_b);
+                date_max.setText(dateEn_b);
+
+                /*
+
+
                 if(filter_hash.size()!=0){
                     //восстанавливаем значение в спинере
                     if(filter_hash.get("type")!=null & filter_hash.get("type").size()!=0){
@@ -315,6 +275,7 @@ public class HomeFragment extends Fragment {
                             }
                         }
                     }
+
                     if(isPrice()){
                         free.setChecked(true);
                         price_min.setEnabled(false);
@@ -340,17 +301,16 @@ public class HomeFragment extends Fragment {
                         if(!filter_hash.get("price_kids").get(1).toString().equals("99999999"))
                         price_kids_max.setText(filter_hash.get("price_kids").get(1).toString());
                     }
-                    if(isToday()){
-                        today.setChecked(true);
-                        date_min.setClickable(false);
-                        date_max.setClickable(false);
-                    }
+
                     else if(filter_hash.get("date")!=null & filter_hash.get("date").size()==2){
                         long time = (long)filter_hash.get("date").get(0);
                         date_min.setText(filter_hash.get("date_string").get(0).toString());
                         date_max.setText(filter_hash.get("date_string").get(1).toString());
                     }
+
                 }
+                 */
+
             }
         });
 
@@ -382,35 +342,61 @@ public class HomeFragment extends Fragment {
     }
 
     private void reload(List<Event> events){
+        current_list = list_events;
+        adapter = new DataAdapter(getActivity(), events);
+        recyclerView.setAdapter(adapter);
         if(events.size()==0){
             Utils.loading(recyclerView,circular_progress,tv_empty
                     ,iv_empty,false,false);
         }
-        adapter = new DataAdapter(getActivity(), events);
-        recyclerView.setAdapter(adapter);
     }
 
-    public List<Integer> checkPrice(CheckBox free,EditText price_min, EditText price_max){
-        List<Integer> price_list = new ArrayList<>();
-        if(free.isChecked()){
-            price_list.add(0);price_list.add(0);
+    private void setFreeKids(boolean b){
+        if(b)
+        {
+            free_kids.setChecked(true);
+            price_kids_max.setEnabled(false);
+            price_kids_min.setEnabled(false);
         }
-        else if(!price_min.getText().toString().isEmpty()&&price_max.getText().toString().isEmpty()){
-            price_list.add(Integer.parseInt(price_min.getText().toString()));
-            price_list.add(99999999);
+        else{
+            price_kids_max.setEnabled(true);
+            price_kids_min.setEnabled(true);
         }
-        else if(price_min.getText().toString().isEmpty()&&!price_max.getText().toString().isEmpty()){
-            price_list.add(0);
-            price_list.add(Integer.parseInt(price_max.getText().toString()));
-        }
-        else if(!price_min.getText().toString().isEmpty()&&!price_max.getText().toString().isEmpty()){
-            price_list.add(Integer.parseInt(price_min.getText().toString()));
-            price_list.add(Integer.parseInt(price_max.getText().toString()));
-        }
-
-        return price_list;
     }
+    private void setFree(boolean b){
+        if(b){
+            price_min.setEnabled(false);
+            price_max.setEnabled(false);
+            price_kids_max.setEnabled(false);
+            price_kids_min.setEnabled(false);
+            free.setChecked(true);
+            free_kids.setChecked(true);
+            free_kids.setEnabled(false);
 
+        }
+        else{
+            price_min.setEnabled(true);
+            price_max.setEnabled(true);
+            price_kids_max.setEnabled(true);
+            price_kids_min.setEnabled(true);
+            free_kids.setChecked(false);
+            free_kids.setEnabled(true);
+        }
+    }
+    private void setToday(boolean b){
+        if(b)
+        {
+            today.setChecked(true);
+            date_min.setClickable(false);
+            date_max.setClickable(false);
+            date_min.setText(getResources().getText(R.string.min_date));
+            date_max.setText(getResources().getText(R.string.max_date));
 
+        }
+        else{
+            date_min.setClickable(true);
+            date_max.setClickable(true);
+        }
+    }
 
 }

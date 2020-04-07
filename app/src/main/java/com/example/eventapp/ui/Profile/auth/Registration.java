@@ -77,17 +77,22 @@ public class Registration extends Fragment {
         return false;
     }
     public void registration(String mail,String pass){
+        //Создаем аккаунт
         if(setData()) {
 
             mAuth.createUserWithEmailAndPassword(mail, pass)
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                        //формируем запрос к серверу
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                //если всё удачно
                                 Toast.makeText(getContext(), "all good", Toast.LENGTH_SHORT).show();
+                                //создаем обьект пользователя FireBaseUser
                                 c_user = mAuth.getCurrentUser();
                                 c_user.sendEmailVerification();
                                 User.setId(c_user.getUid());
+                                //Формирум статический класс User
                                 User user = new User(User.getMail(),User.getCity(),User.getName(),User.getId());
                                 MainActivity.mDatabaseReference.child("user").child(user.getId()).setValue(user);
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(User.getName()).build();

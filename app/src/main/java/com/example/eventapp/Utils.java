@@ -1,5 +1,8 @@
 package com.example.eventapp;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -175,6 +178,7 @@ public class Utils {
             return ""+n;
     }
     //показываем загрузку
+    //1 видимость прогресса 2 видимость задника
     public static void loading(RecyclerView recyclerView, ProgressBar circular_progress,
                                TextView tv_empty, ImageView iv_empty, boolean a, boolean b){
         if(a){
@@ -214,5 +218,49 @@ public class Utils {
                     }
                 });
     }
+    public static double [] getCoord(String address,String city, Context context){
+
+        double coord [] = {0.0,0.0};
+        Geocoder geocoder = new Geocoder(context);
+        List<Address> addresses;
+
+        try {
+            addresses = geocoder.getFromLocationName(city + ", " + address,1);
+            if(addresses.size() > 0) {
+                coord[0]= addresses.get(0).getLatitude();
+                coord[1]= addresses.get(0).getLongitude();
+            }
+        }catch (Exception e){
+
+        }
+        return coord;
+    }
+
+    public static List<String> getAddresses(String address,String city, Context context){
+
+        double coord [] = {0.0,0.0};
+        Geocoder geocoder = new Geocoder(context);
+        List<Address> addresses;
+        List<String> addresses_line = new ArrayList<String>();
+        try {
+            addresses = geocoder.getFromLocationName(city + ", " + address,5);
+            for (Address a: addresses) {
+                addresses_line.add(a.getAddressLine(0));
+            }
+            return addresses_line;
+        }catch (Exception e){
+            return null;
+        }
+
+
+
+    }
+
+    public static void setNewState(Event e,int state){
+            DatabaseReference ref = mFirebaseDatabase.getInstance().getReference("events").child(e.getId());
+            ref.child("state").setValue(state);
+//            tv.setText(count + "");
+    }
+
 
 }
