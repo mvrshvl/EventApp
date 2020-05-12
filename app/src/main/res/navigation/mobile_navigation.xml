@@ -54,6 +54,18 @@
         android:id="@+id/settings"
         android:name="com.example.eventapp.ui.Profile.settings.settings"
         tools:layout="@layout/settings_fragment"/>
+    <fragment
+        android:id="@+id/other_profile"
+        android:name="com.example.eventapp.ui.Profile.social.OtherProfiles"
+        tools:layout="@layout/other_profiles_fragment"/>
 
+    <fragment
+        android:id="@+id/messenger"
+        android:name="com.example.eventapp.messenger.Messenger"
+        tools:layout="@layout/messenger_fragment"/>
+    <fragment
+        android:id="@+id/dialogs"
+        android:name="com.example.eventapp.ui.Profile.dialogs.Dialogs"
+        tools:layout="@layout/dialogs_fragment"/>
 
 </navigation>

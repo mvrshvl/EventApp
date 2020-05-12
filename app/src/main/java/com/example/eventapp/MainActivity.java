@@ -1,12 +1,14 @@
 package com.example.eventapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
@@ -19,9 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean moderator_mode;
     public static int ref_color_ok;
     public static int ref_color_ban;
+    private int in_register = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +81,15 @@ public class MainActivity extends AppCompatActivity {
                 if(currentUser != null){
                         visibleMenu(true);
                         setUserInfo();
-                        //Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.navigation_home);
+                    //Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).popBackStack();
+                    //Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.navigation_home);
 
                 }
-                else{
+                else if(in_register == 0){
+                    in_register++;
                     visibleMenu(false);
                     //еси пльзоватеь не авторизован в приложении переводим на экран регистрации/авторизации
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).popBackStack();
                     Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.auth);
                 }
             }
@@ -135,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 User.setId(user.id);
                 User.setMail(user.mail);
                 User.setCity(user.city);
+                User.setPhoto(user.photo);
             }
 
             @Override
@@ -153,4 +164,14 @@ public class MainActivity extends AppCompatActivity {
         display.getSize(size);
         return size;
     }
+
+/*    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(Navigation.findNavController(this,R.id.nav_host_fragment).getCurrentDestination().getId());
+        fragment.onActivityResult(requestCode,resultCode,data);
+    }
+
+ */
 }

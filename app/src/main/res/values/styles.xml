@@ -62,6 +62,7 @@
     <item name="android:layout_width">50dp</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:src">@drawable/ic_arrow_back_black_24dp</item>
+        <item name="android:background">@color/colorAccent</item>
     <item name="android:layout_gravity">left</item>
     <item name="android:padding">5dp</item>
 </style>
@@ -81,8 +82,11 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
 
     </style>
+
+
     <style name="ButtonStyle1" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorAccent</item>
@@ -101,6 +105,8 @@
 <style name="signing_et">
 <item name="android:layout_width">match_parent</item>
 <item name="android:layout_height">wrap_content</item>
+    <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+    <item name="android:backgroundTint">@color/colorPrimary</item>
 <item name="android:layout_margin">20dp</item>
 </style>
     <style name="profile_info">
@@ -130,6 +136,29 @@
         <item name="android:windowBackground">@drawable/bg_dialog_image</item>
     </style>
 
-
-
+    <style name="headFragment">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+    <style name="message_in">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+    </style>
+    <style name="message_out">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
 </resources>

@@ -5,13 +5,15 @@
     android:background="@color/recyclerBack"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <TextView
+        style="@style/headFragment"
+        android:text="@string/my_meeting" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/sr_is_empty"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:textStyle="bold"
         android:textSize="30sp"
         android:id="@+id/tv_empty"
@@ -20,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:src="@drawable/ic_mood_bad_black_24dp"
         android:id="@+id/iv_empty"
         />
@@ -29,6 +31,7 @@
         app:layoutManager="LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"
 
         />

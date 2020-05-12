@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,8 +28,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.eventapp.Event;
+import com.example.eventapp.MainActivity;
 import com.example.eventapp.R;
+import com.example.eventapp.User;
 import com.example.eventapp.Utils;
+import com.example.eventapp.ui.Profile.DataAdapter;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -69,6 +75,11 @@ public class EventSingle extends Fragment {
     private Button ban_bt;
     private Button diss_bt;
     private Event event;
+    private User user;
+    private LinearLayout block_price,block_about;
+    private ImageView like_bt;
+    private boolean like_flag;
+    private TextView date_end_tv, type_tv,address_tv,price_tv,price_out_tv,price_kids_tv,price_kids_out_tv,kids_age_et,about_tv,like_tv,profile_tv;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -77,15 +88,28 @@ public class EventSingle extends Fragment {
         final TextView date_tv =(TextView) root.findViewById(R.id.date_event);
         final TextView name_tv = (TextView) root.findViewById(R.id.name_event);
         final ImageView full = (ImageView) root.findViewById(R.id.fullscreen);
+        date_end_tv= (TextView)root.findViewById(R.id.date_event_end);
+        type_tv = (TextView) root.findViewById(R.id.type_tv);
+        address_tv = (TextView)root.findViewById(R.id.address_tv);
+        price_tv = (TextView)root.findViewById(R.id.price_tv);
+        price_out_tv = (TextView) root.findViewById(R.id.price_out);
+        price_kids_tv = (TextView) root.findViewById(R.id.price_kids_tv);
+        price_kids_out_tv = (TextView) root.findViewById(R.id.price_kids_out);
+        price_kids_out_tv = (TextView) root.findViewById(R.id.price_kids_out);
+        price_kids_out_tv = (TextView) root.findViewById(R.id.price_kids_out);
         ok_bt = (Button) root.findViewById(R.id.ok_bt);
         ban_bt = (Button) root.findViewById(R.id.bun_bt);
         diss_bt = (Button)root.findViewById(R.id.diss_but);
-
+        kids_age_et = (TextView)root.findViewById(R.id.kids_age_et);
+        block_price = (LinearLayout) root.findViewById(R.id.block_price_kids);
+        about_tv = (TextView) root.findViewById(R.id.about_tv);
+        block_about = (LinearLayout)root.findViewById(R.id.block_about);
+        like_bt = (ImageView) root.findViewById(R.id.like_bt);
+        like_tv = (TextView)root.findViewById(R.id.like_tv);
+        profile_tv = (TextView)root.findViewById(R.id.profile_id_tv);
         //PAGER
         mPager_in = (ViewPager) root.findViewById(R.id.pager);
         indicator_in = (CirclePageIndicator) root.findViewById(R.id.indicator);
-
-        //////
 
 
         //Вызываем диалоговое окно с полноэкранной картинкой
@@ -128,15 +152,12 @@ public class EventSingle extends Fragment {
 
         });
 
-        //Получаем id из бандла и подгружаем его
+                //Получаем id из бандла и подгружаем его
         final String event_id = getArguments().getString("id");
         mDatabaseReference.child("events").child(event_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Event e = dataSnapshot.getValue(Event.class);
-                name = e.getName();
-                long ms = e.getDate();
-                date = setTime(ms);
 
                 IMAGES = new ArrayList<>();
                 if(!e.getImages_path1().isEmpty())
@@ -146,8 +167,96 @@ public class EventSingle extends Fragment {
                 if(!e.getImages_path3().isEmpty())
                     IMAGES.add(e.getImages_path3());
                 initIn();
-                date_tv.setText(date);
-                name_tv.setText(name);
+                date_tv.setText(setTime(e.getDate()));
+                name_tv.setText(e.getName());
+                like_tv.setText(e.getLike()+"");
+
+                ///// установим лайк
+                mDatabaseReference.child("favourites").orderByChild("event").equalTo(e.getId()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        String userDB = "" + dataSnapshot.child("user").getValue();
+                        String userCU = MainActivity.getCurrentUser().getUid();
+
+
+                        if (userDB.equals(userCU)) {
+                            like_bt.setImageResource(R.drawable.ic_favorite_black_24dp);
+                            like_flag = true;
+                        }
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                if(setTime(e.getDate_end()).indexOf("23 : 59")==-1)
+                    date_end_tv.setText(setTime(e.getDate_end()));
+                else{
+                    ViewGroup.LayoutParams params = date_end_tv.getLayoutParams();
+                    params.height = 0;
+                }
+                type_tv.setText(e.getType());
+                address_tv.setText(e.getAddress());
+
+                if(e.getAbout().length()==0){
+                    ViewGroup.LayoutParams params = block_about.getLayoutParams();
+                    params.height = 0;
+                }
+                else{
+                    about_tv.setText(e.getAbout());
+                }
+                if(e.getType_age()==0) {
+                    if(e.getPrice()==0)
+                        price_out_tv.setText("Бесплатно");
+                    else
+                        price_out_tv.setText(String.valueOf(e.getPrice()));
+                    if(e.getPrice()!=0)
+                    {
+                        if(e.getPrice_kids()==0)
+                            price_kids_out_tv.setText("Бесплатно");
+                        else
+                            price_kids_out_tv.setText(String.valueOf(e.getPrice_kids()));
+                    }
+                    else{
+                        kids_age_et.setVisibility(View.INVISIBLE);
+                        price_kids_tv.setVisibility(View.INVISIBLE);
+                        ViewGroup.LayoutParams params = block_price.getLayoutParams();
+                        params.height = 0;
+
+                    }
+
+                    if(e.getKids_age()!=0) {
+                        kids_age_et.setText(String.valueOf(e.getKids_age()));
+                    }
+                    else
+                        kids_age_et.setText("18");
+                }
+                else if(e.getType_age()==1){
+                    if (e.getPrice()==0)
+                        price_out_tv.setText("Бесплатно");
+                    else
+                        price_out_tv.setText(String.valueOf(e.getPrice()));
+                    price_kids_tv.setText("Вход только от 18 лет");
+                }
+
 
 
                 if(moderator_mode){
@@ -165,6 +274,19 @@ public class EventSingle extends Fragment {
 
 
                 event = e;
+                mDatabaseReference.child("user").child(event.getUser()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        user = dataSnapshot.getValue(User.class);
+                        profile_tv.setText(user.name);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -172,6 +294,8 @@ public class EventSingle extends Fragment {
 
             }
         });
+
+
 
         //moderator
         if(moderator_mode){
@@ -190,12 +314,37 @@ public class EventSingle extends Fragment {
                     case R.id.bun_bt:
                         deny();
                         break;
+                    case R.id.like_bt:
+                        set_like();
+                        break;
+                    case R.id.profile_id_tv:
+                        Bundle data = new Bundle();
+                        data.putString("id",user.id);
+                        Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.other_profile,data);
+                        break;
                 }
             }
         };
         ok_bt.setOnClickListener(onClickListener);
         ban_bt.setOnClickListener(onClickListener);
+        like_bt.setOnClickListener(onClickListener);
+        profile_tv.setOnClickListener(onClickListener);
         return root;
+    }
+    private void set_like(){
+        if(like_flag){
+            Utils.changeImgFalse(like_bt);
+            Utils.deleteLike(event);
+            event.setLike(event.getLike()-1);
+            like_flag = false;
+        }
+        else{
+            Utils.changeImgTrue(like_bt);
+            Utils.sendLike(event);
+            event.setLike(event.getLike()+1);
+            like_flag = true;
+        }
+        like_tv.setText(event.getLike()+"");
     }
     //Полноэкранный пэйджер
     private void init(Context c) {

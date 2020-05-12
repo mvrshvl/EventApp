@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     android:background="@color/recyclerBack"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <TextView
+        style="@style/headFragment"
+        android:text="@string/title_home" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/sr_is_empty"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:textSize="30sp"
         android:textStyle="bold"
         android:id="@+id/tv_empty"
@@ -19,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:src="@drawable/ic_mood_bad_black_24dp"
         android:id="@+id/iv_empty"
         />
@@ -29,6 +31,7 @@
         app:layoutManager="LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
         android:layout_marginBottom="100dp"
         />
     <ProgressBar
@@ -43,7 +46,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="45dp"
         android:background="@color/colorAccent"
         >
         <ImageButton

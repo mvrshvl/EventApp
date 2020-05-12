@@ -49,6 +49,7 @@
         style="@style/signing_et"
         android:id="@+id/town"
         android:entries="@array/cities"/>
+
     </LinearLayout>
     <Button
         style="@style/continue_but"

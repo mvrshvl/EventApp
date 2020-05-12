@@ -1,5 +1,6 @@
 package com.example.eventapp.ui.Profile.auth;
 
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -72,6 +73,8 @@ public class Enter extends Fragment {
                             //еси всё удачно переключаемся на само приожение
                             Navigation.findNavController(getActivity(),R.id.nav_host_fragment).popBackStack();
                             Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.navigation_home);
+//
+                            getActivity().recreate();
                             circularProgress.setVisibility(View.INVISIBLE);
 
                         }

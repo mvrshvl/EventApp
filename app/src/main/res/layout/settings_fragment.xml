@@ -3,48 +3,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     tools:context=".ui.Profile.settings.settings">
+        <TextView
+            style="@style/headFragment"
+            android:text="@string/settings" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
         android:orientation="vertical"
         >
-        <Button
-            android:layout_marginTop="30dp"
-            style="@style/basicButtons"
-            android:id="@+id/button_name"
-            android:text="@string/change_name"/>
-        <Button
-            style="@style/basicButtons"
-            android:id="@+id/button_password"
-            android:text="@string/change_password"/>
-        <Button
-            style="@style/basicButtons"
-            android:id="@+id/button_verify"
-            android:text="@string/verify_account"/>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:text="Изменить город"
-            />
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="10dp"
-            android:textSize="25sp"
-            android:id="@+id/city_spinner"
-            android:entries="@array/cities"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="invisible"
+            android:layout_marginTop="70dp"
+            android:orientation="vertical"
+            android:background="@color/colorAccent">
+            <Button
+                style="@style/basicButtons"
+                android:id="@+id/button_name"
+                android:text="@string/change_name"/>
+            <Button
+                style="@style/basicButtons"
+                android:id="@+id/button_password"
+                android:text="@string/change_password"/>
+            <Button
+                style="@style/basicButtons"
+                android:text="Добавить фотографию"
+                android:id="@+id/add_photo_bt"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Изменить город"
+                />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:textSize="25sp"
+                android:id="@+id/city_spinner"
+                android:entries="@array/cities"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:id="@+id/block_verify"
+            android:background="@color/colorAccent"
+            android:orientation="vertical"
+            android:visibility="visible"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/not_verify"
+                android:paddingLeft="10dp"/>
+            <Button
+                style="@style/basicButtons"
+                android:id="@+id/button_verify"
+                android:text="@string/verify_account"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
+            android:background="@color/colorAccent"
             android:id="@+id/block_moderator"
             android:orientation="horizontal">
             <TextView
@@ -66,12 +107,24 @@
                 />
 
         </LinearLayout>
-        <Button
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/block_admin"
+            android:visibility="visible"
             android:layout_marginTop="15dp"
-            style="@style/basicButtons"
-            android:id="@+id/add_moder"
-            android:text="Добавить модератора"/>
+            >
+            <Button
+                style="@style/basicButtons"
+                android:id="@+id/add_moder"
+                android:text="Добавить модератора"/>
+        </LinearLayout>
+
     </LinearLayout>
+    </ScrollView>
+
 <Button
     android:layout_marginBottom="70dp"
     android:text="@string/change_settings"

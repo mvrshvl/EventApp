@@ -371,16 +371,22 @@ public class addEventFifth extends Fragment {
                                 ref1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        uploadFilesUri[0]=uri;
-                                        key++;
                                         setData();
-                                        if(key==1&&uploadFilesUri[1]==null) {
-                                            send();
-                                            Toast.makeText(getContext(), uri.toString(), Toast.LENGTH_SHORT).show();
+                                        if(key==0){
+                                            uploadFilesUri[0]=uri;
                                         }
-                                        else if(key==2&&uploadFilesUri[2]==null)
+
+                                        else if(key==1) {
+                                            uploadFilesUri[1]=uri;
+                                        }
+                                        else if(key ==2){
+                                            uploadFilesUri[2]=uri;
+                                        }
+                                        key++;
+                                        if(key == 3){
                                             send();
-                                        else if(key==3)
+                                        }
+                                        else if(uploadFilesUri[key]==null)
                                             send();
                                     }
                                 });

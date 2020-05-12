@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,9 +31,16 @@ import com.example.eventapp.Moderator;
 import com.example.eventapp.R;
 import com.example.eventapp.User;
 import com.example.eventapp.Utils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.eventapp.MainActivity.getCurrentUser;
 import static com.example.eventapp.MainActivity.mDatabaseReference;
 import static com.example.eventapp.Utils.verify;
@@ -42,7 +52,15 @@ public class settings extends Fragment {
     private String password, name, new_password1, new_password2;
     private Spinner city;
     private Switch switch_mode;
-    private LinearLayout block_moderator;
+    private LinearLayout block_moderator,block_verify,block_admin;
+    //Загрузка фото
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private final int PICK_IMAGE_REQUEST = 71;
+    public Uri photo_ref;
+    private Bitmap photo_bm;
+    private Button photo_bt;
+    //---------------------
     public static settings newInstance() {
         return new settings();
     }
@@ -61,11 +79,27 @@ public class settings extends Fragment {
         switch_mode.setChecked(MainActivity.moderator_mode);
         button_add_moder = (Button)root.findViewById(R.id.add_moder);
         block_moderator = (LinearLayout) root.findViewById(R.id.block_moderator);
-        //выключаем пункты по ролям
-        if(!getCurrentUser().getUid().equals("ysQKb26rYiSFKq0I35Od8EUk10i2")){
-            button_add_moder.setVisibility(View.INVISIBLE);
+        block_verify = (LinearLayout) root.findViewById(R.id.block_verify);
+        block_admin = (LinearLayout) root.findViewById(R.id.block_admin);
+
+        photo_bt = (Button)root.findViewById(R.id.add_photo_bt);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        FirebaseUser currentUser=MainActivity.getCurrentUser();
+        if(currentUser.isEmailVerified()) {
+            block_verify.setVisibility(View.INVISIBLE);
+            ViewGroup.LayoutParams params = block_verify.getLayoutParams();
+            params.height = 0;
         }
         Utils.isModerator(block_moderator);
+
+        if(!getCurrentUser().getEmail().equals("myakishev1998@outlook.com")) {
+            block_admin.setVisibility(View.INVISIBLE);
+            ViewGroup.LayoutParams params = block_admin.getLayoutParams();
+            params.height = 0;
+        }
+
         city.setSelection(getIndexCity(SettingsViewModel.getCity()));
         View.OnClickListener onClickListener1 = new View.OnClickListener() {
             @Override
@@ -94,6 +128,9 @@ public class settings extends Fragment {
                     case R.id.add_moder:
                         addModerator();
                         break;
+                    case R.id.add_photo_bt:
+                        chooseImage();
+                        break;
                 }
             }
 
@@ -103,6 +140,8 @@ public class settings extends Fragment {
         button_password.setOnClickListener(onClickListener1);
         button_verify.setOnClickListener(onClickListener1);
         button_apply.setOnClickListener(onClickListener1);
+        photo_bt.setOnClickListener(onClickListener1);
+
         city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -220,7 +259,7 @@ public class settings extends Fragment {
         //и отображаем его:
         alertDialog.show();
 
-        alertDialog.getWindow().setLayout(1000,500);
+        alertDialog.getWindow().setLayout(1000,400);
     }
 
     private void changePassword(){
@@ -294,6 +333,49 @@ public class settings extends Fragment {
 
         }
         return 0;
+    }
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            photo_ref = data.getData();
+            upload();
+        }
+    }
+    private void upload(){
+        final StorageReference ref1 = storageReference.child("images/"+ UUID.randomUUID().toString());
+        ref1.putFile(photo_ref)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        ref1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                mViewModel.sendChanges(
+                                        uri.toString(),
+                                        "",
+                                        3);                            }
+                        });
+
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

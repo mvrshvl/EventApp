@@ -1,5 +1,6 @@
 package com.example.eventapp.ui.Profile.add;
 
+import android.location.Address;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +27,9 @@ public class addEventFour extends Fragment {
     private Button next;
     private static Button date_end;
     private static Button time_end;
-    private static EditText price;
+    private static EditText price, kids_age;
     private static CheckBox free;
+    private RadioButton rb_null,rb_18,rb_kids;
     View view_root;
 
     @Override
@@ -41,6 +44,11 @@ public class addEventFour extends Fragment {
         price = (EditText) root.findViewById(R.id.price_kids);
         free=(CheckBox) root.findViewById(R.id.price_free_kids);
         next=(Button)root.findViewById(R.id.next_to_4);
+        rb_18 = (RadioButton) root.findViewById(R.id.rb_18);
+        rb_kids = (RadioButton)root.findViewById(R.id.rb_kids);
+        rb_null = (RadioButton) root.findViewById(R.id.rb_null);
+        kids_age = (EditText) root.findViewById(R.id.kids_age_et);
+
 
         final dateTimePicker date_time_2 = new dateTimePicker();
         View.OnClickListener onClickListener2 = new View.OnClickListener() {
@@ -71,6 +79,28 @@ public class addEventFour extends Fragment {
                             price.setText("");
                         }
                         break;
+                    case R.id.rb_18:
+                        price.setEnabled(false);
+                        free.setEnabled(false);
+                        kids_age.setEnabled(false);
+                        AddEventViewModel.setType_age(1);
+                        AddEventViewModel.setKids_age(0);
+                        break;
+                    case R.id.rb_kids:
+                        free.setEnabled(true);
+                        kids_age.setEnabled(true);
+                        if(!free.isChecked())
+                            price.setEnabled(true);
+                        AddEventViewModel.setType_age(2);
+                        break;
+                    case R.id.rb_null:
+                        free.setEnabled(true);
+                        kids_age.setEnabled(true);
+                        if(!free.isChecked())
+                            price.setEnabled(true);
+                        AddEventViewModel.setType_age(0);
+                        break;
+
                 }
             }
 
@@ -80,10 +110,14 @@ public class addEventFour extends Fragment {
         free.setOnClickListener(onClickListener2);
         back.setOnClickListener(onClickListener2);
         next.setOnClickListener(onClickListener2);
+        rb_null.setOnClickListener(onClickListener2);
+        rb_18.setOnClickListener(onClickListener2);
+        rb_kids.setOnClickListener(onClickListener2);
         return root;
     }
 
     public static void setData(){
+
         AddEventViewModel.setDate_end(date_end.getText().toString());
         AddEventViewModel.setTime_end(time_end.getText().toString());
 
@@ -93,7 +127,10 @@ public class addEventFour extends Fragment {
         else{
             if(!price.getText().toString().equals(""))
                 AddEventViewModel.setPrice_kids(Integer.parseInt(price.getText().toString()));
-            else  AddEventViewModel.setPrice_kids(-1);
+            else  AddEventViewModel.setPrice_kids(0);
+        }
+        if (kids_age.getText().toString().length()>0){
+            AddEventViewModel.setKids_age(Integer.parseInt(kids_age.getText().toString()));
         }
     }
     private void getData(){
@@ -111,6 +148,10 @@ public class addEventFour extends Fragment {
         else if (AddEventViewModel.getPrice_kids()==0){
             free.setChecked(true);
         }
+        if(kids_age.getText().toString().length()>0){
+            AddEventViewModel.setKids_age(Integer.parseInt(kids_age.getText().toString()));
+        }
+
 
     }
 

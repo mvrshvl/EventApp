@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -29,6 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.eventapp.MainActivity.getCurrentUser;
@@ -38,6 +40,7 @@ import static com.example.eventapp.MainActivity.mFirebaseDatabase;
 public class Utils {
     public static List<Event> list_event;
     public static boolean flag_moderator;
+    public static boolean is_like = false;
     public static void setNewCity(String city){
         mDatabaseReference.child("user").child(User.getId()).child("city").setValue(city);
         User.setCity(city);
@@ -163,13 +166,13 @@ public class Utils {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(ms);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH);
-        month ++;
+        String m = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("ru"));
         int hour = cal.get(Calendar.HOUR_OF_DAY);
-
         int minute = cal.get(Calendar.MINUTE);
-        return format(day)+"."+format(month)+" "+format(hour)+" : "+ format(minute);
+
+        return format(day)+" "+m+" "+format(hour)+" : "+ format(minute);
     }
+
 
     public static String format(int n){
         if(n<10)
@@ -208,6 +211,8 @@ public class Utils {
                             Moderator fav = ds.getValue(Moderator.class);
                             if(fav.getId().equals(User.getMail())){
                                 block.setVisibility(View.VISIBLE);
+                                ViewGroup.LayoutParams params = block.getLayoutParams();
+                                params.height = 0;
                             }
                         }
                     }
@@ -262,5 +267,48 @@ public class Utils {
 //            tv.setText(count + "");
     }
 
+    public static boolean isLike(String id){
+        is_like = false;
+        mDatabaseReference.child("favourites").orderByChild("event").equalTo(id).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String userDB = "" + dataSnapshot.child("user").getValue();
+                String userCU = MainActivity.getCurrentUser().getUid();
 
+
+                if (userDB.equals(userCU)) {
+                    is_like = true;
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return is_like;
+    }
+
+    public static void changeImgTrue(ImageView v){
+        v.setImageResource(R.drawable.ic_favorite_black_24dp);
+    }
+    public static void changeImgFalse(ImageView v){
+        v.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+    }
 }

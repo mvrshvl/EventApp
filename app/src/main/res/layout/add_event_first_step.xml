@@ -9,6 +9,10 @@
     <FrameLayout
         style="@style/add_frame_title"
         >
+        <ImageView
+            style="@style/add_back_button"
+            android:id="@+id/back_to_0"
+            />
         <TextView
             style="@style/title"
             android:text="@string/select_type"

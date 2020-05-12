@@ -33,6 +33,25 @@ public class AddEventViewModel extends ViewModel {
     static  private String date_end;
     static  private String time;
     static  private String time_end;
+
+    public static int getType_age() {
+        return type_age;
+    }
+
+    public static void setType_age(int type_age) {
+        AddEventViewModel.type_age = type_age;
+    }
+
+    public static int getKids_age() {
+        return kids_age;
+    }
+
+    public static void setKids_age(int kids_age) {
+        AddEventViewModel.kids_age = kids_age;
+    }
+
+    static private int type_age = 0;
+    static private int kids_age = 0;
     static Bitmap[] images=new Bitmap[3];
     static Uri[] images_path=new Uri[3];
 
@@ -119,7 +138,7 @@ public class AddEventViewModel extends ViewModel {
          images_path3=images_path[2].toString();
         else
             images_path3="";
-        Event event = new Event(type,name,about,price,price_kids,msStart,msEnd,address,id,images_path1,images_path2,images_path3,0,MainActivity.getCurrentUser().getUid(), User.getCity(),0,0);
+        Event event = new Event(type,name,about,price,price_kids,msStart,msEnd,address,id,images_path1,images_path2,images_path3,0,MainActivity.getCurrentUser().getUid(), User.getCity(),0,0,kids_age,type_age);
         MainActivity.mDatabaseReference.child("events").child(event.getId()).setValue(event);
     }
 

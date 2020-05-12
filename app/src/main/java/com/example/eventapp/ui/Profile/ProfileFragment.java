@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseUser currentUser;
     AppCompatActivity activity;
     private TextView id,name,town,mail;
+    private ImageView photo_iv;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -50,11 +52,12 @@ public class ProfileFragment extends Fragment {
         name = (TextView)root.findViewById(R.id.name_profile) ;
         town = (TextView)root.findViewById(R.id.town) ;
         mail = (TextView)root.findViewById(R.id.mail) ;
-
+        photo_iv = (ImageView) root.findViewById(R.id.photo_iv);
         //id.setText(currentUser.getUid());
         name.setText(User.getName());
         town.setText(User.getCity());
         mail.setText(User.getMail());
+        ProfileViewModel.setPhoto(photo_iv);
 /*
         final TextView textView = root.findViewById(R.id.name_profile);
         profileViewModel.getText().observe(this, new Observer<String>() {
@@ -110,6 +113,8 @@ public class ProfileFragment extends Fragment {
                     case R.id.settings:
                         Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.settings);
                         break;
+                    case  R.id.my_msg:
+                        Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.dialogs);
 
                 }
             }
@@ -119,6 +124,7 @@ public class ProfileFragment extends Fragment {
         Button button_f=(Button)root.findViewById(R.id.fav);
         Button button_me = (Button) root.findViewById(R.id.my_ev);
         Button button_s = (Button) root.findViewById(R.id.settings);
+        Button button_d = (Button) root.findViewById(R.id.my_msg);
 
         if(currentUser!=null) {
             button_a.setOnClickListener(onClickListener2);
@@ -126,6 +132,7 @@ public class ProfileFragment extends Fragment {
             button_f.setOnClickListener(onClickListener2);
             button_me.setOnClickListener(onClickListener2);
             button_s.setOnClickListener(onClickListener2);
+            button_d.setOnClickListener(onClickListener2);
         }
 
         return root;

@@ -39,6 +39,10 @@ public class SettingsViewModel extends ViewModel {
             else if(type == 2){
                     mAuth.sendPasswordResetEmail(MainActivity.getCurrentUser().getEmail());
             }
+            else if(type == 3){
+                DatabaseReference ref = mFirebaseDatabase.getInstance().getReference("user").child(MainActivity.getCurrentUser().getUid());
+                ref.child("photo").setValue(arg1);
+            }
         }
 
 

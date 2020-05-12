@@ -85,6 +85,24 @@ public class Event {
     private long date_end;
     private String address;
     private String id;
+    private int type_age;
+    private int kids_age;
+
+    public int getType_age() {
+        return type_age;
+    }
+
+    public void setType_age(int type_age) {
+        this.type_age = type_age;
+    }
+
+    public int getKids_age() {
+        return kids_age;
+    }
+
+    public void setKids_age(int kids_age) {
+        this.kids_age = kids_age;
+    }
 
     public int getState() {
         return state;
@@ -165,7 +183,7 @@ public class Event {
 
     private int diss;
 
-    public Event(String type,String name, String about, int price,int price_kids,long date,long date_end,String address,String id,String images_path1,String images_path2,String images_path3,int like,String user,String city, int state,int diss) {
+    public Event(String type,String name, String about, int price,int price_kids,long date,long date_end,String address,String id,String images_path1,String images_path2,String images_path3,int like,String user,String city, int state,int diss,int kids_age,int type_age) {
         this.type = type;
         this.name = name;
         this.about = about;
@@ -183,6 +201,8 @@ public class Event {
         this.city = city;
         this.state = state;
         this.diss = diss;
+        this.type_age = type_age;
+        this.kids_age = kids_age;
     }
     public Event(){
 

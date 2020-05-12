@@ -22,6 +22,7 @@ import com.example.eventapp.Favourites;
 import com.example.eventapp.MainActivity;
 import com.example.eventapp.R;
 import com.example.eventapp.Event;
+import com.example.eventapp.Utils;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -66,12 +67,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    private void changeImgTrue(ImageView v){
-        v.setImageResource(R.drawable.ic_favorite_black_24dp);
-    }
-    private void changeImgFalse(ImageView v){
-        v.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-    }
+
 
     @Override
     public void onBindViewHolder(final DataAdapter.ViewHolder holder, final int position) {
@@ -89,6 +85,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         Picasso.get().load(image).fit().centerCrop().into(holder.imageView);//.fit
         flags.put(position,false);
         if(getCurrentUser()!=null) {
+
             mDatabaseReference.child("favourites").orderByChild("event").equalTo(home_fragments.get(position).getId()).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -152,13 +149,13 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             public void onClick(View v) {
                 Event event = home_fragments.get(position);
                 if (!flags.get(position)) {
-                    changeImgTrue(holder.b_like);
+                    Utils.changeImgTrue(holder.b_like);
                     flags.put(position, true);
                     sendLike(home_fragments.get(position));
                     event.setLike(event.getLike()+1);
                 }
                 else {
-                    changeImgFalse(holder.b_like);
+                    Utils.changeImgFalse(holder.b_like);
                     flags.put(position,false);
                     deleteLike(home_fragments.get(position));
                     event.setLike(event.getLike()-1);

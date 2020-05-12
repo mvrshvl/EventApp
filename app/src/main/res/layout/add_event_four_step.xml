@@ -41,6 +41,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/myEditText"
                     android:layout_weight="1"
                     android:id="@+id/price_kids"
                     android:inputType="numberDecimal"
@@ -55,6 +56,31 @@
                     android:text="@string/free"
                     android:theme="@style/CheckBoxColor"
                     />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="До"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/myEditText"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/kids_age_et"
+                    android:inputType="number"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="лет"/>
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
@@ -88,6 +114,40 @@
                     android:text="@string/time"
                     />
             </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Возрастные ограничения"
+                android:padding="10dp"/>
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rb_null"
+                    android:padding="10dp"
+                    android:theme="@style/CheckBoxColor"
+                    android:checked="true"
+                    android:text="Для любых возрастов"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rb_18"
+                    android:padding="10dp"
+                    android:theme="@style/CheckBoxColor"
+                    android:text="18+"
+                    />
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/CheckBoxColor"
+                    android:id="@+id/rb_kids"
+                    android:padding="10dp"
+                    android:text="Для детей"/>
+            </RadioGroup>
         </LinearLayout>
 
     </ScrollView>
